@@ -1,0 +1,158 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "creation": "2024-10-11 04:57:37.777656",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_bmnq",
+  "card_number",
+  "column_break_iqtz",
+  "card_subtype",
+  "section_break_cdaz",
+  "card_type",
+  "column_break_jihc",
+  "expiration",
+  "column_break_wukc",
+  "cvc",
+  "party_details_section",
+  "customer",
+  "column_break_kxas",
+  "address_and_contact_section",
+  "address_html",
+  "column_break_hfpp",
+  "contact_html"
+ ],
+ "fields": [
+  {
+   "fieldname": "card_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Card Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "card_type",
+   "fieldtype": "Select",
+   "label": "Card Type",
+   "options": "\nMastercard\nVisa\nAmerican Express\nDiscovery",
+   "read_only": 1
+  },
+  {
+   "fieldname": "card_subtype",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Card Subtype",
+   "options": "Debit\nCredit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_bmnq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_iqtz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_cdaz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "expiration",
+   "fieldtype": "Data",
+   "label": "Expiration"
+  },
+  {
+   "fieldname": "column_break_wukc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cvc",
+   "fieldtype": "Data",
+   "label": "CVC"
+  },
+  {
+   "fieldname": "party_details_section",
+   "fieldtype": "Section Break",
+   "label": "Party Details"
+  },
+  {
+   "fieldname": "column_break_jihc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact_html",
+   "fieldtype": "HTML",
+   "label": "Contact HTML"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "HTML",
+   "label": "Address HTML"
+  },
+  {
+   "fieldname": "column_break_kxas",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address_and_contact_section",
+   "fieldtype": "Section Break",
+   "label": "Address and Contact"
+  },
+  {
+   "fieldname": "column_break_hfpp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "group": "Party",
+   "link_doctype": "Customer",
+   "link_fieldname": "custom_default_card"
+  }
+ ],
+ "modified": "2024-10-15 04:10:41.524332",
+ "modified_by": "Administrator",
+ "module": "Mabecenter",
+ "name": "Bank Card",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

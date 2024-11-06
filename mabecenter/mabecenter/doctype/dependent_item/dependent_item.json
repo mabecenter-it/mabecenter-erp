@@ -1,0 +1,106 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-09 04:44:00.923260",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "contact",
+  "day_of_birth",
+  "ssn",
+  "gender",
+  "relationship",
+  "document",
+  "smoke",
+  "pregnant",
+  "apply"
+ ],
+ "fields": [
+  {
+   "fieldname": "contact",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Contact",
+   "options": "Contact",
+   "reqd": 1,
+   "width": "2"
+  },
+  {
+   "fetch_from": "contact.custom_day_of_birth",
+   "fieldname": "day_of_birth",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Day of Birth",
+   "read_only": 1,
+   "width": "2"
+  },
+  {
+   "columns": 2,
+   "fetch_from": "contact.custom_ssn",
+   "fieldname": "ssn",
+   "fieldtype": "Data",
+   "label": "SSN",
+   "read_only": 1,
+   "width": "1"
+  },
+  {
+   "fetch_from": "contact.gender",
+   "fieldname": "gender",
+   "fieldtype": "Data",
+   "label": "Gender",
+   "read_only": 1,
+   "width": "1"
+  },
+  {
+   "default": "0",
+   "fieldname": "apply",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Apply",
+   "width": "1"
+  },
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Relationship",
+   "options": "\nOwner\nSpouse\nChild\nSibling\nParent\nPibling\nGrandparent\nGrandchild\nNibling\nCousin\nParent-In-Law\nChild-in-Law",
+   "width": "2"
+  },
+  {
+   "fetch_from": "contact.custom_document",
+   "fieldname": "document",
+   "fieldtype": "Data",
+   "label": "Document",
+   "read_only": 1,
+   "width": "1"
+  },
+  {
+   "default": "0",
+   "fieldname": "smoke",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Smoke"
+  },
+  {
+   "default": "0",
+   "fieldname": "pregnant",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Pregnant"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-10-10 12:00:41.775508",
+ "modified_by": "Administrator",
+ "module": "Mabecenter",
+ "name": "Dependent Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

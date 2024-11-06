@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-09 08:26:10.366802",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "contact",
+  "ssn",
+  "income",
+  "migratory",
+  "citizenship",
+  "coverage",
+  "dateline"
+ ],
+ "fields": [
+  {
+   "fieldname": "contact",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Contact",
+   "options": "Contact",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "ssn",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "SSN"
+  },
+  {
+   "default": "0",
+   "fieldname": "income",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Income"
+  },
+  {
+   "default": "0",
+   "fieldname": "migratory",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Migratory"
+  },
+  {
+   "default": "0",
+   "fieldname": "citizenship",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Citizenship"
+  },
+  {
+   "default": "0",
+   "fieldname": "coverage",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Coverage"
+  },
+  {
+   "fieldname": "dateline",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Dateline",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-10-09 09:01:38.055784",
+ "modified_by": "Administrator",
+ "module": "Mabecenter",
+ "name": "Document Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

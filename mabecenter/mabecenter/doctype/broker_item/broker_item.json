@@ -1,0 +1,48 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-10 05:09:50.434986",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "npn",
+  "broker_initial",
+  "broker_end"
+ ],
+ "fields": [
+  {
+   "fieldname": "npn",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "NPN",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "broker_initial",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Broker Initial",
+   "reqd": 1
+  },
+  {
+   "fieldname": "broker_end",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Broker End"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-10-10 05:14:54.329334",
+ "modified_by": "Administrator",
+ "module": "Mabecenter",
+ "name": "Broker Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
