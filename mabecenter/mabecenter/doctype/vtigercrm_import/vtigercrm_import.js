@@ -2,9 +2,6 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("VTigerCRM Import", {
-    refresh(frm) {
-
-    },
     onload_post_render(frm) {
 		frm.trigger("update_primary_action");
 	},
