@@ -3,14 +3,35 @@
 
 # import frappe
 import frappe
+from frappe import _
 from rq.timeouts import JobTimeoutException
 from frappe.model.document import Document
-from frappe.core.doctype.vtigercrm_import.importer import Importer
-
-
+from frappe.core.doctype.data_import.importer import Importer
+from frappe.utils.background_jobs import enqueue, is_job_enqueued
 
 class VTigerCRMImport(Document):
-	pass
+	def start_import(self):
+		from frappe.utils.scheduler import is_scheduler_inactive
+
+		run_now = frappe.flags.in_test or frappe.conf.developer_mode
+		if is_scheduler_inactive() and not run_now:
+			frappe.throw(_("Scheduler is inactive. Cannot import data."), title=_("Scheduler Inactive"))
+
+		job_id = f"data_import::{self.name}"
+
+		if not is_job_enqueued(job_id):
+			enqueue(
+				start_import,
+				queue="default",
+				timeout=10000,
+				event="data_import",
+				job_id=job_id,
+				data_import=self.name,
+				now=run_now,
+			)
+			return True
+
+		return False
 
 @frappe.whitelist()
 def form_start_import(vtigercrm_import: str):
