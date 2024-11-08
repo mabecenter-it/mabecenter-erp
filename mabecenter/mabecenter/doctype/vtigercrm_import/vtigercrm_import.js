@@ -2,6 +2,11 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("VTigerCRM Import", {
+	setup(frm) {
+		frm.has_import_file = () => {
+			return frm.doc.import_file || frm.doc.google_sheets_url;
+		};
+	},
     onload_post_render(frm) {
 		frm.trigger("update_primary_action");
 	},
@@ -19,5 +24,16 @@ frappe.ui.form.on("VTigerCRM Import", {
 				frm.page.set_primary_action(__("Save"), () => frm.save());
 			}
 		}
+	},
+	start_import(frm) {
+		frm.call({
+			method: "form_start_import",
+			args: { data_import: frm.doc.name },
+			btn: frm.page.btn_primary,
+		}).then((r) => {
+			if (r.message === true) {
+				frm.disable_save();
+			}
+		});
 	},
 });

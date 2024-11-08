@@ -56,6 +56,12 @@
    "fieldname": "import_preview",
    "fieldtype": "HTML",
    "label": "Import Preview"
+  },
+  {
+    "fieldname": "document_type_2",
+    "fieldtype": "Select",
+    "label": "Document Type 2",
+    "options": "Sales Order\nContact\nTicket"
   }
  ],
  "index_web_pages_for_search": 1,
