@@ -1,0 +1,87 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{document_type} Import on {creation}",
+ "beta": 1,
+ "creation": "2024-11-07 14:42:40.143548",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "vtigercrm_data_section",
+  "import_file",
+  "column_break_dcxd",
+  "status",
+  "document_type",
+  "preview_section",
+  "import_preview"
+ ],
+ "fields": [
+  {
+   "fieldname": "import_file",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Import File"
+  },
+  {
+   "fieldname": "vtigercrm_data_section",
+   "fieldtype": "Section Break",
+   "label": "VTigerCRM Data"
+  },
+  {
+   "fieldname": "column_break_dcxd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "document_type",
+   "fieldtype": "Select",
+   "label": "Document Type",
+   "options": "Sales Order\nContact"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "Pending\nSuccess\nPartial Success\nError\nTimed Out",
+   "read_only": 1
+  },
+  {
+   "fieldname": "preview_section",
+   "fieldtype": "Section Break",
+   "label": "Preview"
+  },
+  {
+   "fieldname": "import_preview",
+   "fieldtype": "HTML",
+   "label": "Import Preview"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-07 15:55:26.232675",
+ "modified_by": "Administrator",
+ "module": "Mabecenter",
+ "name": "VTigerCRM Import",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
