@@ -6,7 +6,9 @@ frappe.ui.form.on("VTigerCRM Import", {
 		frm.has_import_file = () => {
 			return frm.doc.import_file;
 		};
+		frm.toggle_display("section_import_preview", false);
 		frappe.realtime.on("vtigercrm_import_refresh", ({ vtigercrm_import }) => {
+			frm.toggle_display("section_import_preview", true);
 			//frappe.msgprint(__(`Testeando Ando ${vtigercrm_import}...`));
 			frm.get_field("import_preview").$wrapper.empty();
 			$('<span class="text-muted">')
