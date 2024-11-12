@@ -4,8 +4,21 @@
 frappe.ui.form.on("VTigerCRM Import", {
 	setup(frm) {
 		frm.has_import_file = () => {
-			return frm.doc.import_file || frm.doc.google_sheets_url;
+			return frm.doc.import_file;
 		};
+		frappe.realtime.on("vtigercrm_import_refresh", ({ vtigercrm_import }) => {
+			//frappe.msgprint(__(`Testeando Ando ${vtigercrm_import}...`));
+			frm.get_field("import_preview").$wrapper.empty();
+			$('<span class="text-muted">')
+				.html(__(`Testeando Ando ${vtigercrm_import}...`))
+				.appendTo(frm.get_field("import_preview").$wrapper);
+			frm.import_in_progress = false;
+			if (vtigercrm_import !== frm.doc.name) return;
+			frappe.model.clear_doc("VTigerCRM Import", frm.doc.name);
+			frappe.model.with_doc("VTigerCRM Import", frm.doc.name).then(() => {
+				frm.refresh();
+			});
+		});
 	},
     onload_post_render(frm) {
 		frm.trigger("update_primary_action");
@@ -28,7 +41,7 @@ frappe.ui.form.on("VTigerCRM Import", {
 	start_import(frm) {
 		frm.call({
 			method: "form_start_import",
-			args: { data_import: frm.doc.name },
+			args: { vtigercrm_import: frm.doc.name },
 			btn: frm.page.btn_primary,
 		}).then((r) => {
 			if (r.message === true) {

@@ -8,8 +8,10 @@ from rq.timeouts import JobTimeoutException
 from frappe.model.document import Document
 from frappe.core.doctype.data_import.importer import Importer
 from frappe.utils.background_jobs import enqueue, is_job_enqueued
+import time
 
 class VTigerCRMImport(Document):
+
 	def start_import(self):
 		from frappe.utils.scheduler import is_scheduler_inactive
 
@@ -17,16 +19,16 @@ class VTigerCRMImport(Document):
 		if is_scheduler_inactive() and not run_now:
 			frappe.throw(_("Scheduler is inactive. Cannot import data."), title=_("Scheduler Inactive"))
 
-		job_id = f"data_import::{self.name}"
+		job_id = f"vtigercrm_import::{self.name}"
 
 		if not is_job_enqueued(job_id):
 			enqueue(
 				start_import,
 				queue="default",
 				timeout=10000,
-				event="data_import",
+				event="vtigercrm_import",
 				job_id=job_id,
-				data_import=self.name,
+				vtigercrm_import=self.name,
 				now=run_now,
 			)
 			return True
@@ -42,7 +44,7 @@ def start_import(vtigercrm_import):
 	"""This method runs in background job"""
 	vtigercrm_import = frappe.get_doc("VTigerCRM Import", vtigercrm_import)
 	try:
-		i = Importer(vtigercrm_import.reference_doctype, vtigercrm_import=vtigercrm_import)
+		i = Importer(vtigercrm_import.reference_doctype, data_import=vtigercrm_import)
 		i.import_data()
 	except JobTimeoutException:
 		frappe.db.rollback()
@@ -54,4 +56,7 @@ def start_import(vtigercrm_import):
 	finally:
 		frappe.flags.in_import = False
 
-	frappe.publish_realtime("vtigercrm_import_refresh", {"vtigercrm_import": vtigercrm_import.name})
+	
+	for i in range(100):
+		frappe.publish_realtime("vtigercrm_import_refresh", {"vtigercrm_import": i})
+		time.sleep(0.05)
