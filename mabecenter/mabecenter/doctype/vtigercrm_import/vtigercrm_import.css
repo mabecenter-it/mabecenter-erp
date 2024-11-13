@@ -1,0 +1,9 @@
+.text-love {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.text-love:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra suave */
+    transform: translateY(-2px); /* Elevación ligera */
+}
