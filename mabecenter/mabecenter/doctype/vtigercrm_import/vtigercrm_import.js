@@ -10,18 +10,18 @@ frappe.ui.form.on("VTigerCRM Import", {
 		console.log("1 vez")
 		frappe.realtime.on("vtigercrm_import_refresh", ({ vtigercrm_import }) => {
 			frm.toggle_display("section_import_preview", true);
-			frm.get_field("import_preview").$wrapper.empty();
+			/* frm.get_field("import_preview").$wrapper.empty();
 			$('<span class="label label-primary text-love">')
 				.html(__(`
 					<div class="progress">
 						<div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
 							role="progressbar" style="width: 0%;" 
-							aria-valuenow="0" aria-valuemin="0" aria-valuemax="${vtigercrm_import}">
+							aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 							0%
 						</div>
 					</div>
 				`))
-				.appendTo(frm.get_field("import_preview").$wrapper);
+				.appendTo(frm.get_field("import_preview").$wrapper); */
 			frm.import_in_progress = false;
 			if (vtigercrm_import !== frm.doc.name) return;
 			frappe.model.clear_doc("VTigerCRM Import", frm.doc.name);

@@ -50,7 +50,8 @@
   {
    "fieldname": "import_preview",
    "fieldtype": "HTML",
-   "label": "Import Preview"
+   "label": "Import Preview",
+   "options": "<div class=\"progress\">\n<div class=\"progress-bar progress-bar-striped progress-bar-animated bg-primary\" role=\"progressbar\" style=\"width: 0%;\">\n</div>\n</div>"
   },
   {
    "fieldname": "section_import_preview",
@@ -60,7 +61,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-12 09:03:55.386834",
+ "modified": "2024-11-13 05:22:22.786218",
  "modified_by": "Administrator",
  "module": "Mabecenter",
  "name": "VTigerCRM Import",
