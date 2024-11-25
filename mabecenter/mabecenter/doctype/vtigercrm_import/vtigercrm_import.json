@@ -12,7 +12,7 @@
   "column_break_dcxd",
   "status",
   "document_type",
-  "preview_section",
+  "section_import_preview",
   "import_preview"
  ],
  "fields": [
@@ -48,19 +48,20 @@
    "read_only": 1
   },
   {
-   "fieldname": "preview_section",
-   "fieldtype": "Section Break",
-   "label": "Preview"
-  },
-  {
    "fieldname": "import_preview",
    "fieldtype": "HTML",
-   "label": "Import Preview"
+   "label": "Import Preview",
+   "options": "<div class=\"progress\">\n<div class=\"progress-bar progress-bar-striped progress-bar-animated bg-primary\" role=\"progressbar\" style=\"width: 0%;\">\n</div>\n</div>"
+  },
+  {
+   "fieldname": "section_import_preview",
+   "fieldtype": "Section Break",
+   "label": "Preview"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-07 15:55:26.232675",
+ "modified": "2024-11-13 05:22:22.786218",
  "modified_by": "Administrator",
  "module": "Mabecenter",
  "name": "VTigerCRM Import",
