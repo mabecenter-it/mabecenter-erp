@@ -1,0 +1,214 @@
+@import './healthsherpa/healthsherpa.scss';
+
+.css-1ol1nt9 {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    flex-shrink: 0;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-size: 20px;
+    vertical-align: text-bottom;
+}
+
+.css-14x16ip {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    flex-shrink: 0;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: rgb(53, 176, 164);
+    font-size: 16px;
+    margin-right: 4px;
+    margin-left: 0px;
+    top: -1px;
+    position: relative;
+}
+
+.css-vtsccc {
+    display: flex;
+    flex-flow: wrap;
+    gap: 5px;
+}
+
+.css-1dnzclp {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0px;
+    margin: 0px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    border: 1px solid rgb(174, 191, 204);
+    color: rgb(9, 112, 197);
+    box-shadow: none;
+    border-radius: 6px;
+    text-transform: none;
+    transition: none 0s ease 0s;
+    font-family: Avenir, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    min-width: 0px;
+    padding: 4px 11px;
+}
+
+.css-1hgll6h {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    flex-shrink: 0;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: rgb(223, 85, 77);
+    font-size: 16px;
+    margin-right: 4px;
+    top: 3px;
+    position: relative;
+}
+
+:root {
+    --brandColor: #0970C5;
+/*     --heading-color: #0970C5; */
+    --accentColor: #0D61A6;
+    --accentSemiLight: #0D61A6;
+    --altAccentSemiLight: #0D61A6;
+    --altAccentLight: #66D1FF;
+    --footerFontColor: #FFFFFF;
+    --legalDisclaimerFontColor: #FFFFFF;
+    --gray-50: #e7eff5;
+    --gray-100: #F9FAFC;
+    --font-stack: 'avenir', sans-serif;
+}
+
+@font-face {
+    font-family: Avenir;
+    font-display: auto;
+    font-weight: 200;
+    font-style: normal;
+    src: url(/assets/configurator/fonts/Avenir/AvenirLight/AvenirLTStd-Light.eot);
+    src: url(/assets/configurator/fonts/Avenir/AvenirLight/AvenirLTStd-Light.eot?#iefix) format("embedded-opentype"),url(/assets/configurator/fonts/Avenir/AvenirLight/AvenirLTStd-Light.woff2) format("woff2"),url(/assets/configurator/fonts/Avenir/AvenirLight/AvenirLTStd-Light.woff) format("woff"),url(/assets/configurator/fonts/Avenir/AvenirLight/AvenirLTStd-Light.ttf) format("truetype")
+}
+
+@font-face {
+    font-family: "Avenir";
+    font-display: auto;
+    font-weight: normal;
+    font-style: normal;
+    src: url(/assets/configurator/fonts/Avenir/AvenirRoman/AvenirLTStd-Roman.eot);
+    src: url(/assets/configurator/fonts/Avenir/AvenirRoman/AvenirLTStd-Roman.eot?#iefix) format("embedded-opentype"),url(/assets/configurator/fonts/Avenir/AvenirRoman/AvenirLTStd-Roman.woff2) format("woff2"),url(/assets/configurator/fonts/Avenir/AvenirRoman/AvenirLTStd-Roman.woff) format("woff"),url(/assets/configurator/fonts/Avenir/AvenirRoman/AvenirLTStd-Roman.ttf) format("truetype")
+}
+
+@font-face {
+    font-family: "Avenir";
+    font-display: auto;
+    font-weight: normal;
+    font-style: oblique;
+    src: url(/assets/configurator/fonts/Avenir/AvenirOblique/AvenirLTStd-Oblique.eot);
+    src: url(/assets/configurator/fonts/Avenir/AvenirOblique/AvenirLTStd-Oblique.eot?#iefix) format("embedded-opentype"),url(/assets/configurator/fonts/Avenir/AvenirOblique/AvenirLTStd-Oblique.woff2) format("woff2"),url(/assets/configurator/fonts/Avenir/AvenirOblique/AvenirLTStd-Oblique.woff) format("woff"),url(/assets/configurator/fonts/Avenir/AvenirOblique/AvenirLTStd-Oblique.ttf) format("truetype")
+}
+
+@font-face {
+    font-family: "Avenir";
+    font-display: auto;
+    font-weight: 600;
+    font-style: normal;
+    src: url(/assets/configurator/fonts/Avenir/AvenirHeavy/AvenirLTStd-Heavy.eot);
+    src: url(/assets/configurator/fonts/Avenir/AvenirHeavy/AvenirLTStd-Heavy.eot?#iefix) format("embedded-opentype"),url(/assets/configurator/fonts/Avenir/AvenirHeavy/AvenirLTStd-Heavy.woff2) format("woff2"),url(/assets/configurator/fonts/Avenir/AvenirHeavy/AvenirLTStd-Heavy.woff) format("woff"),url(/assets/configurator/fonts/Avenir/AvenirHeavy/AvenirLTStd-Heavy.ttf) format("truetype")
+}
+
+.configurator-control {
+    @extend .col-sm-12 !optional;
+    @extend .frappe-control !optional;
+    @extend .my-2 !optional;
+}
+
+.section-head {
+    color: var(--brandColor) !important;
+}
+
+.buttons-module__smallAltCyanSemiLight___AwEz7,.buttons-module__smallButton___WCsmw,.buttons-module__smallCyanSemiLight___MNfcx,.buttons-module__smallGreen3___kWcJG,.buttons-module__smallOutline___Tfra7,.buttons-module__smallRed3___F1GqD,.buttons-module__smallRoyal___Pu3sT,.buttons-module__toggleButtonSmall___fp9bH {
+    border: 1px solid #d3e0e8;
+    border-radius: 6px;
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: Avenir;
+    font-size: 13px;
+    font-weight: 400;
+    font-weight: 600!important;
+    height: 30px;
+    line-height: 20px;
+    padding: 4px 18px;
+    position: relative;
+    text-align: center;
+    text-decoration: none!important
+}
+
+.buttons-module__smallAltCyanSemiLight___AwEz7:disabled,.buttons-module__smallButton___WCsmw:disabled,.buttons-module__smallCyanSemiLight___MNfcx:disabled,.buttons-module__smallGreen3___kWcJG:disabled,.buttons-module__smallOutline___Tfra7:disabled,.buttons-module__smallRed3___F1GqD:disabled,.buttons-module__smallRoyal___Pu3sT:disabled,.buttons-module__toggleButtonSmall___fp9bH:disabled {
+    background-color: #e7eff5 !important;
+    color: #aebfcc !important
+}
+
+.buttons-module__smallAltCyanSemiLight___AwEz7:disabled:hover,.buttons-module__smallButton___WCsmw:disabled:hover,.buttons-module__smallCyanSemiLight___MNfcx:disabled:hover,.buttons-module__smallGreen3___kWcJG:disabled:hover,.buttons-module__smallOutline___Tfra7:disabled:hover,.buttons-module__smallRed3___F1GqD:disabled:hover,.buttons-module__smallRoyal___Pu3sT:disabled:hover,.buttons-module__toggleButtonSmall___fp9bH:disabled:hover {
+    background-color: #e7eff5 !important;
+    border: none;
+    -webkit-box-shadow: inset 0 -2px 0 #a1bdce;
+    -moz-box-shadow: inset 0 -2px 0 #a1bdce;
+    box-shadow: inset 0 -2px 0 #a1bdce;
+    color: #aebfcc !important;
+    cursor: not-allowed
+}
+
+.buttons-module__smallAltCyanSemiLight___AwEz7:hover,.buttons-module__smallButton___WCsmw:hover,.buttons-module__smallCyanSemiLight___MNfcx:hover,.buttons-module__smallGreen3___kWcJG:hover,.buttons-module__smallOutline___Tfra7:hover,.buttons-module__smallRed3___F1GqD:hover,.buttons-module__smallRoyal___Pu3sT:hover,.buttons-module__toggleButtonSmall___fp9bH:hover {
+    cursor: pointer;
+    text-decoration: none
+}
+
+.buttons-module__smallAltCyanSemiLight___AwEz7:focus,.buttons-module__smallButton___WCsmw:focus,.buttons-module__smallCyanSemiLight___MNfcx:focus,.buttons-module__smallGreen3___kWcJG:focus,.buttons-module__smallOutline___Tfra7:focus,.buttons-module__smallRed3___F1GqD:focus,.buttons-module__smallRoyal___Pu3sT:focus,.buttons-module__toggleButtonSmall___fp9bH:focus {
+    outline: 1px solid var(--brandColor)!important;
+    text-decoration: none
+}
+
+.buttons-module__smallAltCyanSemiLight___AwEz7:disabled,.buttons-module__smallButton___WCsmw:disabled,.buttons-module__smallCyanSemiLight___MNfcx:disabled,.buttons-module__smallGreen3___kWcJG:disabled,.buttons-module__smallOutline___Tfra7:disabled,.buttons-module__smallRed3___F1GqD:disabled,.buttons-module__smallRoyal___Pu3sT:disabled,.buttons-module__toggleButtonSmall___fp9bH:disabled {
+    background-color: #e7eff5!important;
+    border: none;
+    -webkit-box-shadow: inset 0 -2px 0 #a1bdce;
+    -moz-box-shadow: inset 0 -2px 0 #a1bdce;
+    box-shadow: inset 0 -2px 0 #a1bdce;
+    color: #aebfcc!important
+}
+
+.buttons-module__fullWidth___WrKMf {
+    display: block;
+    width: 100%
+}
+
+.buttons-module__largeOutlineButtonWithLargerFont___ZbX_6,.buttons-module__largeOutline___mAijQ,.buttons-module__mediumOutline___ueAhs,.buttons-module__outlineWhite___FJ305,.buttons-module__outline___aTewY,.buttons-module__smallOutline___Tfra7 {
+    background-color: transparent;
+    border: 1px solid #aebfcc;
+    color: var(--brandColor)!important;
+    font-weight: 400!important
+}
+
+.buttons-module__largeOutlineButtonWithLargerFont___ZbX_6:hover,.buttons-module__largeOutline___mAijQ:hover,.buttons-module__mediumOutline___ueAhs:hover,.buttons-module__outlineWhite___FJ305:hover,.buttons-module__outline___aTewY:hover,.buttons-module__smallOutline___Tfra7:hover {
+    border: 1px solid var(--brandColor);
+    color: var(--brandColor)
+}
+
+.buttons-module__largeOutlineButtonWithLargerFont___ZbX_6:focus,.buttons-module__largeOutline_  __mAijQ:focus,.buttons-module__mediumOutline___ueAhs:focus,.buttons-module__outlineWhite___FJ305:focus,.buttons-module__outline___aTewY:focus,.buttons-module__smallOutline___Tfra7:focus {
+    color: var(--brandColor);
+    outline-color: #4d90fe;
+    outline-offset: -2px;
+    outline-style: auto;
+    outline-width: 5px
+}

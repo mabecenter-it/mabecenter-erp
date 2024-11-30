@@ -86,6 +86,20 @@ app_license = "mit"
 # after_install = "mabecenter.install.after_install"
 after_migrate = "mabecenter.install.after_migrate"
 
+# setup wizard
+setup_wizard_requires = "assets/mabecenter/js/setup_wizard.js"
+setup_wizard_stages = "mabecenter.setup.setup_wizard.setup_wizard.get_setup_stages"
+
+# import fixtures
+fixtures = [
+    # export all records from the Category table
+    # "Patient",
+	"Sales Order",
+    "Contact"
+    # export only those records that match the filters from the Role table
+    #{"dt": "Role", "filters": [["role_name", "like", "Admin%"]]},
+]
+
 
 # Uninstallation
 # ------------
