@@ -1,0 +1,24 @@
+{
+    "private": true,
+    "name": "mabecenter",
+    "description": "Open Source HR & Payroll System powered by the Frappe Framework",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/mabecenter-it/mabecenter-erp"
+    },
+    "homepage": "https://frappe.io/hr",
+    "author": "Frappe Technologies Pvt. Ltd.",
+    "license": "GPL-3.0",
+    "bugs": {
+      "url": "https://github.com/mabecenter-it/mabecenter-erp/issues"
+    },
+    "workspaces": ["dashboard"],
+    "scripts": {
+      "install": "cd dashboard && yarn install --check-files",
+      "build": "cd dashboard && yarn build"
+    },
+    "dependencies": {
+      "html2canvas": "^1.4.1"
+    }
+  }
+  
