@@ -1,41 +1,25 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{document_type} Import on {creation}",
+ "autoname": "format:{name1} Sync on {creation}",
  "beta": 1,
  "creation": "2024-11-07 14:42:40.143548",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "vtigercrm_data_section",
-  "import_file",
-  "column_break_dcxd",
+  "name1",
   "status",
-  "document_type",
-  "section_import_preview",
-  "import_preview"
+  "column_break_ntli",
+  "sync_on",
+  "section_sync_preview",
+  "sync_preview"
  ],
  "fields": [
-  {
-   "fieldname": "import_file",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Import File"
-  },
   {
    "fieldname": "vtigercrm_data_section",
    "fieldtype": "Section Break",
    "label": "VTigerCRM Data"
-  },
-  {
-   "fieldname": "column_break_dcxd",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "document_type",
-   "fieldtype": "Select",
-   "label": "Document Type",
-   "options": "Sales Order\nContact"
   },
   {
    "default": "Pending",
@@ -48,23 +32,39 @@
    "read_only": 1
   },
   {
-   "fieldname": "import_preview",
-   "fieldtype": "HTML",
-   "label": "Import Preview",
-   "options": "<div class=\"progress\">\n<div class=\"progress-bar progress-bar-striped progress-bar-animated bg-primary\" role=\"progressbar\" style=\"width: 0%;\">\n</div>\n</div>"
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1
   },
   {
-   "fieldname": "section_import_preview",
+   "fieldname": "column_break_ntli",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sync_on",
+   "fieldtype": "Data",
+   "label": "Sync on",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_sync_preview",
    "fieldtype": "Section Break",
    "label": "Preview"
+  },
+  {
+   "fieldname": "sync_preview",
+   "fieldtype": "HTML",
+   "label": "Sync Preview"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-13 05:22:22.786218",
+ "modified": "2024-12-06 15:00:32.575171",
  "modified_by": "Administrator",
  "module": "Mabecenter",
- "name": "VTigerCRM Import",
+ "name": "VTigerCRM Sync",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [

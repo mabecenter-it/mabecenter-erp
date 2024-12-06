@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestVTigerCRMImport(FrappeTestCase):
+class TestVTigerCRMSyncLog(FrappeTestCase):
 	pass

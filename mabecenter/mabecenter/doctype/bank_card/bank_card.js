@@ -51,7 +51,7 @@ frappe.ui.form.on('Bank Card', {
 		});
 	}, */
     refresh: function(frm) {
-        frappe.dynamic_link = { doc: frm.doc, fieldname: 'name', doctype: 'Bank Card' };
+        //frappe.dynamic_link = { doc: frm.doc, fieldname: 'name', doctype: 'Bank Card' };
 
         // Mostrar los campos address_html y contact_html solo si el documento no es nuevo
         frm.toggle_display(['address_html', 'contact_html'], !frm.doc.__islocal);
