@@ -19,13 +19,12 @@ class Syncer:
 
     def sync(self):
         filename = frappe.get_app_path('mabecenter', 'mabecenter', 'doctype', 'vtigercrm_sync', 'config', 'mapping', 'contact.json')
-        fields = None
+        status_values = ['Active', 'Initial Enrollment', 'Sin Digitar']
+        effective = date(2025, 1, 1)
+        selldate = date(2024, 10, 28)
+
         with open(filename, 'r', encoding='utf-8') as file:
             fields = json.load(file)
-
-            status_values = ['Active', 'Initial Enrollment', 'Sin Digitar']
-            effective = date(2025, 1, 1)
-            selldate = date(2024, 10, 28)
         
             results = (self.session.query(VTigerSalesOrderCF)
                 .filter(

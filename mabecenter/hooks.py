@@ -84,7 +84,7 @@ app_license = "mit"
 
 # before_install = "mabecenter.install.before_install"
 # after_install = "mabecenter.install.after_install"
-after_migrate = "mabecenter.install.after_migrate"
+after_install = "mabecenter.install.after_migrate"
 
 # setup wizard
 setup_wizard_requires = "assets/mabecenter/js/setup_wizard.js"
@@ -100,8 +100,6 @@ fixtures = [
     # export only those records that match the filters from the Role table
     #{"dt": "Role", "filters": [["role_name", "like", "Admin%"]]},
 ]
-
-app_include_translations = "translations/es/es.json"
 
 # Uninstallation
 # ------------
