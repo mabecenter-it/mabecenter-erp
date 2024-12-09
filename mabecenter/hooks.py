@@ -94,12 +94,14 @@ setup_wizard_stages = "mabecenter.setup.setup_wizard.setup_wizard.get_setup_stag
 fixtures = [
     # export all records from the Category table
     # "Patient",
-	"Sales Order",
-    "Contact"
+	"Client Script",
+    "Server Script",
+    # "Contact"
     # export only those records that match the filters from the Role table
     #{"dt": "Role", "filters": [["role_name", "like", "Admin%"]]},
 ]
 
+app_include_translations = "translations/es/es.json"
 
 # Uninstallation
 # ------------
@@ -160,6 +162,12 @@ fixtures = [
 # 		"on_trash": "method"
 # 	}
 # }
+
+doc_events = {
+    "Contact": {
+        "validate": "mabecenter.overrides.contact.validate_contact"
+    }
+}
 
 # Scheduled Tasks
 # ---------------

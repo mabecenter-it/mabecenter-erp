@@ -4,7 +4,8 @@
 frappe.ui.form.on("VTigerCRM Sync", {
 	setup(frm) {
 		frm.toggle_display("section_sync_preview", false);
-		frappe.realtime.on("vtigercrm_sync_refresh", ({ percentage }) => {
+		console.log("Setup Step")
+		frappe.realtime.on("vtigercrm_sync_refresh", ({ percentage, vtigercrm_sync }) => {		
 			//if (vtigercrm_sync !== frm.doc.name) return;
 			let $html_wrapper = frm.get_field("sync_preview").$wrapper;
 			$html_wrapper.empty();
@@ -26,9 +27,9 @@ frappe.ui.form.on("VTigerCRM Sync", {
 			$progress_bar.attr('aria-valuenow', percentage);
             $progress_bar.text(percentage + '%');
 			frappe.model.clear_doc("VTigerCRM Sync", frm.doc.name);
-			frappe.model.with_doc("VTigerCRM Sync", frm.doc.name).then(() => {
+			/* frappe.model.with_doc("VTigerCRM Sync", frm.doc.name).then(() => {
 				frm.refresh();
-			});
+			}); */
 		})
 	},
 	onload(frm) {

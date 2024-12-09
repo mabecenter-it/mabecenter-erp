@@ -1,0 +1,23 @@
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.orm import relationship
+
+from mabecenter.mabecenter.doctype.vtigercrm_sync.models.base import Base
+
+class VTigerContactCF(Base):
+    __tablename__ = 'vtiger_contactscf'
+
+    contactid = Column(Integer, ForeignKey('vtiger_contactdetails.contactid'), primary_key=True)
+    custom_day_of_birth = Column('cf_759', DateTime, key="custom_day_of_birth")
+
+    # Relación inversa con VTigerContact
+    contact = relationship("VTigerContact", back_populates="custom_fields")
+
+    def as_dict(self):
+        # Obtener las columnas mapeadas como clave-valor
+        result = {c.key: getattr(self, c.key) for c in self.__table__.columns}
+
+        if result.get('custom_day_of_birth'):
+            result['custom_day_of_birth'] = result['custom_day_of_birth'].strftime("%Y-%m-%d")
+
+        return result

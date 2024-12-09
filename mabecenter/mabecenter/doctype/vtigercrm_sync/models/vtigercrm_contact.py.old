@@ -1,0 +1,30 @@
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+
+#from mabecenter.mabecenter.doctype.vtigercrm_sync.models.vtigercrm_contactcf import VTigerContactCF
+from mabecenter.mabecenter.doctype.vtigercrm_sync.models.base import Base
+
+class VTigerContact(Base):
+    __tablename__ = 'vtiger_contactdetails'
+
+    contactid = Column(Integer, primary_key=True)
+    first_name = Column('firstname', String(40),  key='first_name')
+    last_name = Column('lastname', String(80),  key='last_name')
+
+    custom_fields = relationship(VTigerContactCF, back_populates="contact", uselist=False)
+
+
+    def as_dict(self):
+        # Obtener las columnas mapeadas como clave-valor
+        result = {c.key: getattr(self, c.key) for c in self.__table__.columns}
+
+        result['doctype'] = 'Contact'
+
+        # Agregar custom_fields si está cargado
+        if self.custom_fields:
+            custom_fields_dict = self.custom_fields.as_dict()
+            result.update(custom_fields_dict)
+        
+        return result
+

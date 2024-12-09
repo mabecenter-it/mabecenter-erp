@@ -46,8 +46,8 @@ def start_sync(vtigercrm_sync):
 	"""This method runs in background job"""
 	
 	try:
-		vtigercrm_sync = frappe.get_doc("VTigerCRM Sync", vtigercrm_sync)
-		Syncer()
+		syncer = Syncer(doc_name=vtigercrm_sync)
+		success = syncer.sync()
 	except JobTimeoutException:
 		frappe.db.rollback()
 		vtigercrm_sync.db_set("status", "Timed Out")
