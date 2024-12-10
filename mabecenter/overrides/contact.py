@@ -2,7 +2,7 @@ import frappe
 from frappe import _
 from frappe.utils import getdate, nowdate
 
-from mabecenter.overrides.exception.contact_exist_exception import ContactExist
+from mabecenter.overrides.exception.base_document_exist import BaseDocumentExist
 
 def validate_contact(doc, method):
     # Validar duplicados basados en first_name y last_name
@@ -29,6 +29,6 @@ def validate_contact(doc, method):
         if frappe.flags.from_script:
             print(existing_contact)
             frappe.log_error(message, reference_name=existing_contact)
-            raise ContactExist(message, existing_contact)
+            raise BaseDocumentExist(message, existing_contact)
         else:
             frappe.throw(message)

@@ -34,10 +34,12 @@ class BankCard(Document):
   
 	def autoname(self):
 		# Tomamos el nombre y los últimos 4 dígitos del número de tarjeta
-		formatted_number = '-'.join([self.card_number[i:i+4] for i in range(0, len(self.card_number), 4)])
+		if not self.card_number:
+			frappe.throw("Card number is required")
+		formatted_number = '-'.join([self.card_number[i:i+4] for i in range(0, len(self.card_number or ''), 4)]) if self.card_number else ''
 
 		# Generamos el nuevo nombre del Doctype con el formato deseado
 		self.name = formatted_number
 
 	def on_trash(self):
-		delete_contact_and_address("BankCard", self.name)
+		delete_contact_and_address("Bank Card", self.name)

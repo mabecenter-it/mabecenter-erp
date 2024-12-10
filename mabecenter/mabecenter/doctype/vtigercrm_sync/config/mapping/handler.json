@@ -1,0 +1,26 @@
+{
+    "card": {
+        "doctype": "Bank Card",
+        "depends_on": []
+    },
+    "account": {
+        "doctype": "Bank Account",
+        "depends_on": ["customer"]
+    },
+    "customer": {
+        "doctype": "Customer",
+        "depends_on": ["card", "account"]
+    },
+    "contact": {
+        "doctype": "Contact",
+        "depends_on": ["customer"]
+    },
+    "address": {
+        "doctype": "Address",
+        "depends_on": ["customer"]
+    },
+    "salesorder": {
+        "doctype": "Sales Order",
+        "depends_on": ["customer"]
+    }
+}

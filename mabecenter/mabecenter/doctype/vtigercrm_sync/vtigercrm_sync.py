@@ -4,7 +4,7 @@
 # import frappe
 import frappe
 from frappe import _
-from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer import Syncer
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.syncer import Syncer
 from rq.timeouts import JobTimeoutException
 from frappe.model.document import Document
 
@@ -50,10 +50,12 @@ def start_sync(vtigercrm_sync):
 		success = syncer.sync()
 	except JobTimeoutException:
 		frappe.db.rollback()
-		vtigercrm_sync.db_set("status", "Timed Out")
+		doc = frappe.get_doc("VTigerCRM Sync", vtigercrm_sync)
+		doc.db_set("status", "Timed Out")
 	except Exception:
 		frappe.db.rollback()
-		vtigercrm_sync.db_set("status", "Error")
-		vtigercrm_sync.log_error("VTigerCRM Sync failed")
+		doc = frappe.get_doc("VTigerCRM Sync", vtigercrm_sync)
+		doc.db_set("status", "Error")
+		doc.log_error("VTigerCRM Sync failed")
 	finally:
 		frappe.flags.in_import = False
