@@ -32,9 +32,9 @@ class SalesOrderProcessor(EntityProcessor):
         # Asegurar campos numéricos
         grand_total = float(data.get('grand_total', 0))
         conversion_rate = float(data.get('conversion_rate', 1))
-        base_grand_total = float(grand_total * conversion_rate, 0)
-        commission_rate = float(commission_rate, 0)
-        total_commission = float(total_commission, 0)
+        base_grand_total = float(data.get(grand_total * conversion_rate, 0))
+        commission_rate = float(data.get('commission_rate', 0))
+        total_commission = float(data.get('total_commission', 0))
         
         # Crear la lista para payment_schedule como lista de diccionarios
         payment_schedule = [{
@@ -53,9 +53,9 @@ class SalesOrderProcessor(EntityProcessor):
             'delivery_date': data.get('transaction_date', utils.today()),
             'currency': data.get('currency', 'USD'),
             'conversion_rate': conversion_rate,
-            'commission_rate': 0,
+            'commission_rate': commission_rate,
             'amount_eligible_for_commission': 0,
-            'total_commission': 0,
+            'total_commission': total_commission,
         }
         
         # Convertir a float si algún campo numérico viene como string

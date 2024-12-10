@@ -91,7 +91,7 @@ class Syncer:
             for k, v in data.items():
                 if v is None:
                     processed_data[k] = None
-                elif k in ['grand_total', 'conversion_rate']:
+                elif k in ['grand_total', 'conversion_rate', 'base_grand_total', 'commission_rate', 'total_commission', 'amount_eligible_for_commission']:
                     # Ensure numeric fields are properly converted
                     try:
                         processed_data[k] = float(v)
