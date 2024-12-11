@@ -1,10 +1,5 @@
 import frappe
-from abc import ABC, abstractmethod
-
-class ProgressObserver(ABC):
-    @abstractmethod
-    def update(self, percentage: float, context: dict):
-        pass
+from .base import ProgressObserver
 
 class FrappeProgressObserver(ProgressObserver):
     def update(self, percentage: float, context: dict):
@@ -14,4 +9,4 @@ class FrappeProgressObserver(ProgressObserver):
                 'percentage': f"{percentage * 100:.2f}",
                 'vtigercrm_sync': context['doc_name']
             }
-        ) 
+        )

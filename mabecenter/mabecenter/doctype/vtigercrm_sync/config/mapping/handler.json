@@ -1,7 +1,7 @@
 {
     "card": {
         "doctype": "Bank Card",
-        "depends_on": []
+        "depends_on": ["customer"]
     },
     "account": {
         "doctype": "Bank Account",
@@ -13,11 +13,11 @@
     },
     "contact": {
         "doctype": "Contact",
-        "depends_on": ["customer"]
+        "depends_on": ["customer", "card", "account"]
     },
     "address": {
         "doctype": "Address",
-        "depends_on": ["customer"]
+        "depends_on": ["customer", "card", "account"]
     },
     "salesorder": {
         "doctype": "Sales Order",

@@ -15,7 +15,7 @@
         "card_number": "cf_1465",
         "expiration": "cf_1473",
         "cvc": "cf_1473",
-        "card_type": "cf_2157"
+        "card_subtype": "cf_2157"
     },
     "salesorder": {
         "custom_ffm_app_id": "cf_2115",

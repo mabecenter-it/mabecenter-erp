@@ -1,16 +1,20 @@
 import frappe
 from datetime import date
 import json
+from dataclasses import dataclass, field
+from typing import Dict, Any
 
+@dataclass
 class SyncConfig:
-    def __init__(self):
-        self.status_values = ['Active', 'Initial Enrollment', 'Sin Digitar']
-        self.effective_date = date(2025, 1, 1)
-        self.sell_date = date(2024, 10, 28)
+    status_values: list = field(default_factory=lambda: ['Active', 'Initial Enrollment', 'Sin Digitar'])
+    effective_date: date = field(default_factory=lambda: date(2025, 1, 1))
+    sell_date: date = field(default_factory=lambda: date(2024, 10, 28))
+    
+    def __post_init__(self):
         self.mapping_file = self._load_mapping('salesorder')
         self.handle_file = self._load_mapping('handler')
 
-    def _load_mapping(self, filename):
+    def _load_mapping(self, filename: str) -> Dict[str, Any]:
         filename = frappe.get_app_path(
             'mabecenter', 'mabecenter', 'doctype', 
             'vtigercrm_sync', 'config', 'mapping', f'{filename}.json'

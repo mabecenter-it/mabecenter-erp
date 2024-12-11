@@ -6,30 +6,11 @@ frappe.ui.form.on("VTigerCRM Sync", {
 		frm.toggle_display("section_sync_preview", false);
 		console.log("Setup Step")
 		frappe.realtime.on("vtigercrm_sync_refresh", ({ percentage, vtigercrm_sync }) => {		
-			//if (vtigercrm_sync !== frm.doc.name) return;
-			let $html_wrapper = frm.get_field("sync_preview").$wrapper;
-			$html_wrapper.empty();
-			$('<div class="progress">')
-			.append(
-				$('<div class="progress-bar progress-bar-striped progress-bar-animated bg-primary">')
-					.attr({
-						'role': 'progressbar',
-						'style': 'width: 0%;',
-						'aria-valuenow': '0',
-						'aria-valuemin': '0',
-						'aria-valuemax': '100'
-					})
-					.text('0%')
-			)
-			.appendTo($html_wrapper);
-			let $progress_bar = $html_wrapper.find('.progress-bar');
-			$progress_bar.css('width', percentage + '%');
-			$progress_bar.attr('aria-valuenow', percentage);
-            $progress_bar.text(percentage + '%');
-			frappe.model.clear_doc("VTigerCRM Sync", frm.doc.name);
-			/* frappe.model.with_doc("VTigerCRM Sync", frm.doc.name).then(() => {
-				frm.refresh();
-			}); */
+			// Validar que el sync corresponda al documento actual
+			if (vtigercrm_sync !== frm.doc.name) return;
+			
+			updateProgressBar(frm, percentage);
+			reloadDocument(frm);
 		})
 	},
 	onload(frm) {
@@ -72,3 +53,25 @@ frappe.ui.form.on("VTigerCRM Sync", {
 		});
 	},
 });
+
+function updateProgressBar(frm, percentage) {
+	const $wrapper = frm.get_field("sync_preview").$wrapper;
+	$wrapper.empty();
+	
+	const $progress = $('<div class="progress">').appendTo($wrapper);
+	$('<div class="progress-bar progress-bar-striped progress-bar-animated bg-primary">')
+		.attr({
+			'role': 'progressbar',
+			'style': `width: ${percentage}%`,
+			'aria-valuenow': percentage,
+			'aria-valuemin': '0', 
+			'aria-valuemax': '100'
+		})
+		.text(`${percentage}%`)
+		.appendTo($progress);
+}
+
+function reloadDocument(frm) {
+	frappe.model.with_doc("VTigerCRM Sync", frm.doc.name)
+		.then(() => frm.reload_doc());
+}
