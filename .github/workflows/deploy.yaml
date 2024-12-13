@@ -67,6 +67,16 @@ jobs:
           echo "New semantic tag: $NEW_TAG"
           echo "Full tag with commit: $FULL_TAG"
 
+      - name: Verify APPS_JSON
+        env:
+          APPS_JSON_BASE64: ${{ secrets.APPS_JSON_BASE64 }}
+        run: |
+          echo "Verificando formato del JSON..."
+          echo "$APPS_JSON_BASE64" | base64 -d > apps.json
+          cat apps.json
+          echo "Validando JSON..."
+          jq . apps.json
+
       - name: Build and Push Docker Image
         env:
           APPS_JSON_BASE64: ${{ secrets.APPS_JSON_BASE64 }}
