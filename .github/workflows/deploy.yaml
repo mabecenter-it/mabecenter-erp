@@ -69,7 +69,7 @@ jobs:
           --tag ghcr.io/mabecenter/erpnext:${{ env.FULL_TAG }} \
           --file frappe_docker/images/layered/Containerfile .
 
-        docker push ghcr.io/mabecenter/erpnext:${{ env.FULL_TAG }}
+          docker push ghcr.io/mabecenter/erpnext:${{ env.FULL_TAG }}
       
       # Paso 5: Recrear el archivo values.yaml desde el secreto
 
