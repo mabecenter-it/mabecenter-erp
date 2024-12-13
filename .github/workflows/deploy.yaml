@@ -110,7 +110,7 @@ jobs:
       - name: Checkout Infra Repo
         uses: actions/checkout@v2
         with:
-          repository: mabecenter/helm
+          repository: mabecenter-it/helm
           ref: main
           path: helm
           token: ${{ secrets.GH_PAT }}
