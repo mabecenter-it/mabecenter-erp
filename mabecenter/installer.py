@@ -20,10 +20,12 @@ def create_bs_item():
         new_item.insert(ignore_permissions=True)
 
 def save_config_vtigercrm():
+    print("save_config_vtigercrm")
     """Save VTiger CRM configuration from environment variables to site config"""
     import os
+    import frappe
     from frappe.installer import update_site_config
-
+    frappe.logger("save_config_vtigercrm")
     # Environment variables
     vtiger_config = {
         "db_user_vtiger": os.getenv('VTIGER_USERNAME'),
