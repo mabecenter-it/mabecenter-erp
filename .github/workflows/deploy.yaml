@@ -118,3 +118,7 @@ jobs:
           git add erpnext/custom_values.yaml
           git commit -m "Update Docker image to ${{ env.FULL_TAG }}"
           git push origin main
+
+permissions:
+  contents: read
+  packages: write
