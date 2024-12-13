@@ -9,18 +9,18 @@
     },
     "customer": {
         "doctype": "Customer",
-        "depends_on": ["card", "account"]
+        "depends_on": []
     },
     "contact": {
         "doctype": "Contact",
-        "depends_on": ["customer", "card", "account"]
+        "depends_on": ["customer"]
     },
     "address": {
         "doctype": "Address",
-        "depends_on": ["customer", "card", "account"]
+        "depends_on": ["customer"]
     },
     "salesorder": {
         "doctype": "Sales Order",
-        "depends_on": ["customer"]
+        "depends_on": ["customer", "card", "account"]
     }
 }

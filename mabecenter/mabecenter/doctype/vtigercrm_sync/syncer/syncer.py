@@ -11,6 +11,14 @@ from mabecenter.overrides.exception.sync_error import SyncError
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.unit_of_work import UnitOfWork
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.record import RecordProcessor
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.services.query import QueryService
+from mabecenter.mabecenter.doctype.vtigercrm_sync.models.vtigercrm_salesordercf import VTigerSalesOrderCF
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor import (
+    CustomerProcessor,
+    BankCardProcessor,
+    SalesOrderProcessor,
+    AddressProcessor,
+    ContactProcessor
+)
 
 # Main Syncer class that orchestrates the VTiger CRM synchronization
 class Syncer:
@@ -67,7 +75,7 @@ class Syncer:
             try:
                 # Update progress through observer
                 self.progress_observer.update(idx/total_records, {'doc_name': self.doc_name})
-                # Process individual record
+                # Process individual record using RecordProcessor
                 self.record_processor.process_record(record, self.config.mapping_file)
             except Exception as e:
                 frappe.logger().error(f"Error processing record {idx}: {str(e)}")

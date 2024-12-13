@@ -16,7 +16,7 @@
       ],
       "purpose": ["debug-test"],
       "python": "/workspace/development/frappe-bench/env/bin/python",
-      "cwd": "/workspace/development/frappe-bench/sites",
+      "cwd": "${workspaceRoot}",
       "env": {
         "DEV_SERVER": "1",
         "PYTHONPATH": "/workspace/development/frappe-bench/apps/mabecenter"
@@ -32,7 +32,8 @@
       "skipFiles": [
         "/workspace/development/frappe-bench/apps/frappe/**/*.py",
         "/workspace/development/frappe-bench/apps/erpnext/**/*.py"
-      ]
+      ],
+      "redirectOutput": true
     },
     {
       "name": "Bench Short Worker",

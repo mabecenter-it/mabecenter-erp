@@ -7,7 +7,40 @@ class BaseDocumentHandler(DocumentHandler):
         self.doctype = doctype
 
     def find_existing(self, data):
-        # Method to find existing document - to be implemented in child classes
+        """
+        Find existing document based on key fields.
+        Returns the document if found, None otherwise.
+        """
+        filters = {}
+        
+        # Get metadata for the doctype
+        meta = frappe.get_meta(self.doctype)
+        
+        # Check for unique fields in the doctype
+        for df in meta.fields:
+            if df.unique and df.fieldname in data:
+                filters[df.fieldname] = data[df.fieldname]
+        
+        # If no unique fields found, try common identifying fields
+        if not filters:
+            common_identifiers = ['name', 'code', 'id', 'email', 'phone']
+            for field in common_identifiers:
+                if field in data:
+                    filters[field] = data[field]
+                    break
+        
+        # Return None if no filters could be determined
+        if not filters:
+            return None
+        
+        try:
+            # Attempt to find existing document
+            existing_name = frappe.db.get_value(self.doctype, filters, 'name')
+            if existing_name:
+                return frappe.get_doc(self.doctype, existing_name)
+        except Exception as e:
+            frappe.logger().error(f"Error finding existing {self.doctype}: {str(e)}")
+            
         return None
 
     def update(self, existing_doc, new_data, **dependencies):
