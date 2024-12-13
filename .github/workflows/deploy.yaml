@@ -11,6 +11,18 @@ jobs:
     environment: Develop
 
     steps:
+      # Paso 0: Print username
+      - name: Print username
+        run: echo "Registry username: ${{ secrets.REGISTRY_USERNAME }}"
+      # Paso 0.1: Print password
+      - name: Print password
+        run: echo "Registry password: ${{ secrets.REGISTRY_PASSWORD }}"
+      # Paso 0.2: Print registry
+      - name: Print registry
+        run: echo "Registry: ${{ secrets.REGISTRY }}"
+      # Paso 0.3: Print registry username
+      - name: Print registry username
+        run: echo "Registry username: ${{ secrets.REGISTRY_USERNAME }}"
       # Paso 1: Clonar frappe_docker
       - name: Checkout frappe_docker
         uses: actions/checkout@v2
