@@ -126,8 +126,8 @@ jobs:
           cd helm
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Configurar el token para el push
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/mabecenter-it/helm.git
+          # Configurar el token directamente en la URL
+          git remote set-url origin "https://${{ secrets.GH_PAT }}@github.com/mabecenter-it/helm.git"
           git add erpnext/custom_values.yaml
           git commit -m "Update Docker image to ${{ env.FULL_TAG }}"
           git push origin main
