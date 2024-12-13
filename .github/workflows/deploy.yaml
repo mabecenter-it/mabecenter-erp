@@ -111,8 +111,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: mabecenter/helm
-          path: helm
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: main
 
       # Paso 8: Reemplazar el values.yaml en el repositorio clonado
       - name: Replace values.yaml in infra Repo
