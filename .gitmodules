@@ -1,3 +1,0 @@
-[submodule "frappe-helm"]
-	path = frappe-helm
-	url = https://github.com/frappe/helm.git
