@@ -89,11 +89,11 @@ jobs:
             --build-arg FRAPPE_PATH=https://github.com/frappe/frappe \
             --build-arg FRAPPE_BRANCH=version-15 \
             --build-arg APPS_JSON_BASE64="${APPS_JSON_BASE64}" \
-            --tag ghcr.io/mabecenter/erpnext:${{ env.FULL_TAG }} \
+            --tag docker.io/mabecenter/erpnext:${{ env.FULL_TAG }} \
             --file frappe_docker/images/layered/Containerfile .
           
           # Push de la imagen
-          docker push ghcr.io/mabecenter/erpnext:${{ env.FULL_TAG }}
+          docker push docker.io/mabecenter/erpnext:${{ env.FULL_TAG }}
       
       # Paso 5: Recrear el archivo values.yaml desde el secreto
 
