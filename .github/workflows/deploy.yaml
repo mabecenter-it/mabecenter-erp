@@ -94,19 +94,8 @@ jobs:
           
           # Push de la imagen
           docker push docker.io/mabecenter/erpnext:${{ env.FULL_TAG }}
-      
-      # Paso 5: Recrear el archivo values.yaml desde el secreto
 
-      - name: Reconstruct values.yaml from Secret
-        run: |
-          echo "${{ secrets.VALUES_YAML }}" > values.yaml
-
-      # Paso 6: Actualizar el values.yaml con el nuevo tag
-      - name: Update values.yaml
-        run: |
-          sed -i "s/^  tag: .*$/  tag: ${{ env.FULL_TAG }}/" values.yaml
-
-      # Paso 7: Clonar el repositorio de infra/helm
+      # Paso 6: Clonar el repositorio de infra/helm
       - name: Checkout Infra Repo
         uses: actions/checkout@v2
         with:
@@ -114,13 +103,14 @@ jobs:
           ref: main
           path: helm
           token: ${{ secrets.GH_PAT }}
-
-      # Paso 8: Reemplazar el values.yaml en el repositorio clonado
-      - name: Replace values.yaml in infra Repo
+      
+      # Paso 7: Actualizar solo los valores necesarios en el archivo existente
+      - name: Update values in infra Repo
         run: |
-          mv values.yaml helm/erpnext/values.yaml
+          # Actualizar solo el tag en el archivo existente
+          sed -i "s/^  tag: .*$/  tag: ${{ env.FULL_TAG }}/" helm/erpnext/values.yaml
 
-      # Paso 9: Commit y push del nuevo archivo
+      # Paso 8: Commit y push del nuevo archivo
       - name: Commit and Push Changes
         run: |
           cd helm
