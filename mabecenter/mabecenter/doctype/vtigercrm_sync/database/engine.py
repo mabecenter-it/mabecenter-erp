@@ -13,6 +13,8 @@ db_name = frappe.conf.db_name_vtiger
 # Build MySQL connection string
 connection_string = f"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}" if db_user and db_password and db_host and db_port and db_name else None
 
+engine = None
+
 # Create SQLAlchemy engine with connection pooling settings
 if connection_string:
     engine = create_engine(
