@@ -11,7 +11,6 @@ from mabecenter.overrides.exception.sync_error import SyncError
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.unit_of_work import UnitOfWork
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.record import RecordProcessor
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.services.query import QueryService
-from mabecenter.mabecenter.doctype.vtigercrm_sync.models.vtigercrm_salesordercf import VTigerSalesOrderCF
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor import (
     CustomerProcessor,
     BankCardProcessor,
@@ -47,6 +46,10 @@ class Syncer:
     def sync(self):        
         try:
             # Start database transaction
+            if not engine:
+                frappe.logger().error("Database engine not initialized")
+                return False
+            
             with self.unit_of_work as session:  
                 # Verify database connection
                 version = self.query_service.validate_connection(session)

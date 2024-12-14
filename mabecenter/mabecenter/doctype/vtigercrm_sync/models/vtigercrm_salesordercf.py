@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 from sqlalchemy import MetaData
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.engine import engine
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.base import Base
