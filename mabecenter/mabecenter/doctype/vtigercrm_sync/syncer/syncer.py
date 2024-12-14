@@ -16,7 +16,7 @@ from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor impo
     BankCardProcessor,
     SalesOrderProcessor,
     AddressProcessor,
-    ContactProcessor
+    ContactProcessor,
 )
 
 # Main Syncer class that orchestrates the VTiger CRM synchronization
