@@ -10,7 +10,7 @@ from mabecenter.overrides.exception.sync_error import SyncError
 
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.unit_of_work import UnitOfWork
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.record import RecordProcessor
-from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.services.query import QueryService
+
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor import (
     CustomerProcessor,
     BankCardProcessor,
@@ -22,6 +22,12 @@ from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor impo
 # Main Syncer class that orchestrates the VTiger CRM synchronization
 class Syncer:
     def __init__(self, doc_name):
+        if not engine:
+            frappe.logger().error("Database engine not initialized")
+            return False
+        
+        from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.services.query import QueryService
+        
         # Initialize syncer with document name and required components
         self.doc_name = doc_name
         self.vtigercrm_sync = frappe.get_doc("VTigerCRM Sync", doc_name)
