@@ -23,7 +23,7 @@ jobs:
         with:
           repository: frappe/frappe_docker
           path: frappe_docker
-
+          depth: 0
       # Paso 2: Configurar Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -93,6 +93,7 @@ jobs:
           path: argocd-app
           ref: main
           token: ${{ secrets.GH_PAT }}
+          depth: 0
       
       # Paso 7: Actualizar solo los valores necesarios en el archivo existente
       - name: Update values in infra Repo
