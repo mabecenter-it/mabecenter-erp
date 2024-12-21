@@ -90,6 +90,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: mabecenter-it/argocd-app
+          path: argocd-app
           ref: main
           token: ${{ secrets.GH_PAT }}
       
@@ -97,7 +98,7 @@ jobs:
       - name: Update values in infra Repo
         run: |
           # Actualizar solo el tag en el archivo existente
-          sed -i "s/^  tag: .*$/  tag: ${{ env.FULL_TAG }}/" argocd-app/erpnext/values.yaml
+          sed -i "s/^  tag: .*$/  tag: ${{ env.FULL_TAG }}/" argocd-app/frappe/erpnext/values.yaml
 
       # Paso 8: Commit y push del nuevo archivo
       - name: Commit and Push Changes
