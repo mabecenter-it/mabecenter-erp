@@ -89,25 +89,24 @@ jobs:
       - name: Checkout Infra Repo
         uses: actions/checkout@v2
         with:
-          repository: mabecenter-it/helm
+          repository: mabecenter-it/argocd-app
           ref: main
-          path: helm
           token: ${{ secrets.GH_PAT }}
       
       # Paso 7: Actualizar solo los valores necesarios en el archivo existente
       - name: Update values in infra Repo
         run: |
           # Actualizar solo el tag en el archivo existente
-          sed -i "s/^  tag: .*$/  tag: ${{ env.FULL_TAG }}/" helm/erpnext/values.yaml
+          sed -i "s/^  tag: .*$/  tag: ${{ env.FULL_TAG }}/" argocd-app/erpnext/values.yaml
 
       # Paso 8: Commit y push del nuevo archivo
       - name: Commit and Push Changes
         run: |
-          cd helm
+          cd argocd-app
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Configurar el token directamente en la URL
-          git remote set-url origin "https://${{ secrets.GH_PAT }}@github.com/mabecenter-it/helm.git"
+          git remote set-url origin "https://${{ secrets.GH_PAT }}@github.com/mabecenter-it/argocd-app.git"
           git add erpnext/values.yaml
           git commit -m "Update Docker image to ${{ env.FULL_TAG }}"
           git push origin main
