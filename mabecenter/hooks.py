@@ -171,23 +171,14 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"mabecenter.tasks.all"
-# 	],
-# 	"daily": [
-# 		"mabecenter.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"mabecenter.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"mabecenter.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"mabecenter.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+    # frappe.email.queue.flush every 60 seconds
+    "cron": {
+        "*/60 * * * *": [
+            "frappe.email.queue.flush"
+        ]
+    },
+}
 
 # Testing
 # -------

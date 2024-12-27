@@ -91,9 +91,9 @@ jobs:
         with:
           repository: mabecenter-it/argocd-app
           path: argocd-app
-          ref: main
+          ref: staging
           token: ${{ secrets.GH_PAT }}
-          depth: 0
+          depth: 1
       
       # Paso 7: Actualizar solo los valores necesarios en el archivo existente
       - name: Update values in infra Repo
