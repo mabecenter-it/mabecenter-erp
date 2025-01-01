@@ -48,16 +48,11 @@ class VTigerCRMSync(Document):
 @frappe.whitelist(allow_guest=True)
 def form_start_sync(vtigercrm_sync: str):
 	# Start sync from form
-	print("frappe.whitelist init")
-	frappe.logger().info("frappe.whitelist init")
 	return frappe.get_doc("VTigerCRM Sync", vtigercrm_sync).start_sync()
 
 
 def start_sync(vtigercrm_sync):
 	"""This method runs in background job"""
-	print("start_sync init")
-	frappe.logger().info("start_sync init")
-
 	try:
 		# Execute sync process
 		Syncer(doc_name=vtigercrm_sync).sync()

@@ -23,10 +23,6 @@ from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor impo
 class Syncer:
     def __init__(self, doc_name):
         
-        frappe.publish_progress(25, title='Some title', description='Some description')
-        print("frappe.publish_progress init")
-        frappe.logger().info("frappe.publish_progress init")
-
         if not get_engine():
             frappe.logger().error("Database engine not initialized")
             return False
@@ -38,7 +34,7 @@ class Syncer:
         self.vtigercrm_sync = frappe.get_doc("VTigerCRM Sync", doc_name)
         self.handler_factory = HandlerFactory()
         self.progress_observer = FrappeProgressObserver()
-        self.unit_of_work = UnitOfWork(lambda: sessionmaker(bind=get_engine)())
+        self.unit_of_work = UnitOfWork(lambda: sessionmaker(bind=get_engine())())
         self.config = SyncConfig()
         
         # Set up handlers for different entity types based on config
@@ -57,7 +53,7 @@ class Syncer:
     def sync(self):        
         try:
             # Start database transaction
-            if not engine:
+            if not get_engine():
                 frappe.logger().error("Database engine not initialized")
                 return False
             
