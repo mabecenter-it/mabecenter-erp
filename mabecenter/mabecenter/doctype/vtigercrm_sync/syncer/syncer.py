@@ -2,7 +2,7 @@ import frappe
 
 from sqlalchemy.orm import sessionmaker
 
-from mabecenter.mabecenter.doctype.vtigercrm_sync.database.engine import engine
+from mabecenter.mabecenter.doctype.vtigercrm_sync.database.engine import get_engine
 from mabecenter.mabecenter.doctype.vtigercrm_sync.config.config import SyncConfig
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.handler.factory import HandlerFactory
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.observer.frappe import FrappeProgressObserver
@@ -27,7 +27,7 @@ class Syncer:
         print("frappe.publish_progress init")
         frappe.logger().info("frappe.publish_progress init")
 
-        if not engine:
+        if not get_engine():
             frappe.logger().error("Database engine not initialized")
             return False
         
@@ -38,7 +38,7 @@ class Syncer:
         self.vtigercrm_sync = frappe.get_doc("VTigerCRM Sync", doc_name)
         self.handler_factory = HandlerFactory()
         self.progress_observer = FrappeProgressObserver()
-        self.unit_of_work = UnitOfWork(lambda: sessionmaker(bind=engine)())
+        self.unit_of_work = UnitOfWork(lambda: sessionmaker(bind=get_engine)())
         self.config = SyncConfig()
         
         # Set up handlers for different entity types based on config

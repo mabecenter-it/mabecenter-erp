@@ -45,7 +45,7 @@ class VTigerCRMSync(Document):
 
 		return False
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def form_start_sync(vtigercrm_sync: str):
 	# Start sync from form
 	print("frappe.whitelist init")
