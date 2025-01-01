@@ -22,7 +22,10 @@ from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor impo
 # Main Syncer class that orchestrates the VTiger CRM synchronization
 class Syncer:
     def __init__(self, doc_name):
+        
         frappe.publish_progress(25, title='Some title', description='Some description')
+        print("frappe.publish_progress init")
+        frappe.logger().info("frappe.publish_progress init")
 
         if not engine:
             frappe.logger().error("Database engine not initialized")
