@@ -28,4 +28,4 @@ class ContactProcessor:
     def _create_contact(self, data: Dict[str, Any]) -> Any:
         """Create a new contact document"""
         handler_info = self.handlers['contact']
-        return handler_info['handler'].process(data) 
+        return handler_info['handler'].process(data)

@@ -1,5 +1,5 @@
 import frappe
-from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.handler.base import DocumentHandler
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocumentHandler
 from mabecenter.overrides.exception.base_document_exist import BaseDocumentExist
 
 class BaseDocumentHandler(DocumentHandler):

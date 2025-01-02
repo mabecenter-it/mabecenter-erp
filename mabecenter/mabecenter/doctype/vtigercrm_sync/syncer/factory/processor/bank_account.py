@@ -20,4 +20,5 @@ class BankAccountProcessor(EntityProcessor):
                 'link_doctype': 'Customer',
                 'link_name': dependencies['customer'].name
             })
-        return links 
+            
+        return links

@@ -1,28 +1,18 @@
 import frappe
-
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.factory import HandlerFactory
 from sqlalchemy.orm import sessionmaker
 
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.engine import get_engine
 from mabecenter.mabecenter.doctype.vtigercrm_sync.config.config import SyncConfig
-from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.handler.factory import HandlerFactory
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.observer.frappe import FrappeProgressObserver
 from mabecenter.overrides.exception.sync_error import SyncError
 
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.unit_of_work import UnitOfWork
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.record import RecordProcessor
 
-from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.recorder.processor import (
-    CustomerProcessor,
-    BankCardProcessor,
-    SalesOrderProcessor,
-    AddressProcessor,
-    ContactProcessor,
-)
-
 # Main Syncer class that orchestrates the VTiger CRM synchronization
 class Syncer:
     def __init__(self, doc_name):
-        
         if not get_engine():
             frappe.logger().error("Database engine not initialized")
             return False

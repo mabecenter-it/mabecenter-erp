@@ -5,6 +5,8 @@
 import frappe
 from frappe import _
 # Import sync implementation
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.factory import HandlerFactory
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.record import RecordProcessor
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.syncer import Syncer
 # Import job timeout exception
 from rq.timeouts import JobTimeoutException

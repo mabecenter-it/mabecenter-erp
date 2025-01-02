@@ -1,26 +1,26 @@
 {
-    "card": {
+    "Bank Card": {
         "doctype": "Bank Card",
-        "depends_on": ["customer"]
+        "depends_on": ["Customer"]
     },
-    "account": {
+    "Bank Account": {
         "doctype": "Bank Account",
-        "depends_on": ["customer"]
+        "depends_on": ["Customer"]
     },
-    "customer": {
+    "Customer": {
         "doctype": "Customer",
         "depends_on": []
     },
-    "contact": {
+    "Contact": {
         "doctype": "Contact",
-        "depends_on": ["customer"]
+        "depends_on": ["Customer"]
     },
-    "address": {
+    "Address": {
         "doctype": "Address",
-        "depends_on": ["customer"]
+        "depends_on": ["Customer"]
     },
-    "salesorder": {
+    "Sales Order": {
         "doctype": "Sales Order",
-        "depends_on": ["customer", "card", "account"]
+        "depends_on": ["Customer", "Bank Card", "Bank Account"]
     }
 }

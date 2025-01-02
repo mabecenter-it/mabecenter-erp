@@ -50,4 +50,4 @@ class DependencyResolver:
                 handler_info['handler'].update(doc, {}, **dependencies)
             except Exception as e:
                 frappe.logger().error(f"Error updating dependencies for {entity_type}: {str(e)}")
-                raise 
+                raise

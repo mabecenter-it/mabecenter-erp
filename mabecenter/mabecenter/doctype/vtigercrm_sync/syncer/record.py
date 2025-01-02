@@ -3,9 +3,12 @@ import frappe
 from frappe import _
 from collections import defaultdict, deque
 
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.dependency import DependencyResolver
+
 class RecordProcessor:
     def __init__(self, handlers):
         self.handlers = handlers
+        self.dependency_resolver = DependencyResolver(handlers)
         self.processing_stack = set()
 
     def process_record(self, record, fields):
@@ -14,7 +17,7 @@ class RecordProcessor:
         processed_results = {}
 
         # Process each entity type in order of dependencies
-        processing_order = self._determine_processing_order()
+        processing_order = self.dependency_resolver.determine_processing_order()
 
         for entity_type in processing_order:
             if entity_type not in self.handlers:
@@ -23,54 +26,16 @@ class RecordProcessor:
             entity_data = mapped_data.get(entity_type, {})
 
             # Special handling for contacts from owner/spouse/dependents
-            if entity_type.lower() == 'contact':
+            if entity_type == 'Contact':
                 self._process_contact_entities(entity_data, mapped_data, processed_results)
             else:
                 # Normal entity processing
                 result = self._create_entity(entity_type, entity_data)
                 if result:
                     processed_results[entity_type] = result
-                    self._update_dependencies(entity_type, result, processed_results)
+                    self.dependency_resolver.update_dependencies(entity_type, result, processed_results)
 
         return processed_results
-
-    def _determine_processing_order(self) -> List[str]:
-        """
-        Determina el orden de procesamiento de las entidades basado en sus dependencias.
-        
-        :return: Lista ordenada de tipos de entidad.
-        :raises: Exception si se detecta una dependencia circular.
-        """
-        # Construir el grafo de dependencias
-        graph = defaultdict(list)  # Nodo -> Lista de nodos dependientes
-        indegree = defaultdict(int)  # Nodo -> Número de dependencias entrantes
-
-        # Inicializar nodos y aristas
-        for entity, info in self.handlers.items():
-            depends_on = info.get('depends_on', [])
-            for dependency in depends_on:
-                graph[dependency].append(entity)
-                indegree[entity] += 1
-            if entity not in indegree:
-                indegree[entity] = indegree.get(entity, 0)
-
-        # Cola para nodos sin dependencias entrantes
-        queue = deque([node for node in indegree if indegree[node] == 0])
-        processing_order = []
-
-        while queue:
-            current = queue.popleft()
-            processing_order.append(current)
-
-            for dependent in graph[current]:
-                indegree[dependent] -= 1
-                if indegree[dependent] == 0:
-                    queue.append(dependent)
-
-        if len(processing_order) != len(indegree):
-            raise Exception("Se detectó una dependencia circular en los handlers.")
-
-        return processing_order
 
     def _process_contact_entities(self, contact_data, mapped_data, processed_results):
         contact_info = mapped_data.get('Contact', {})

@@ -15,7 +15,7 @@ class VTigerSalesOrderCF(Base):
         Soporta mapeos anidados para manejar entidades como 'Contact' con subentidades.
         
         :param mapping: Diccionario que define el mapeo de campos.
-        :return: Diccionario mapeado.
+        :return: Diccionario mapeado sin campos vacíos.
         """
         # Convertir el registro de la base de datos a un diccionario
         result = {c.key: getattr(self, c.key) for c in self.__table__.columns}
@@ -28,6 +28,7 @@ class VTigerSalesOrderCF(Base):
         def map_fields(fields_mapping, data):
             """
             Mapea campos según el mapeo proporcionado. Soporta mapeos anidados.
+            Filtra valores vacíos (None o cadenas vacías).
             
             :param fields_mapping: Diccionario de mapeo de campos.
             :param data: Diccionario de datos originales.
@@ -37,14 +38,20 @@ class VTigerSalesOrderCF(Base):
             for descriptive_field, cf_field in fields_mapping.items():
                 if isinstance(cf_field, dict):
                     # Si el valor es un diccionario, procesarlo recursivamente
-                    mapped[descriptive_field] = map_fields(cf_field, data)
+                    nested_mapped = map_fields(cf_field, data)
+                    if nested_mapped:  # Solo agregar si no está vacío
+                        mapped[descriptive_field] = nested_mapped
                 else:
-                    mapped[descriptive_field] = data.get(cf_field)
+                    value = data.get(cf_field)
+                    if value not in (None, ''):  # Filtrar valores vacíos
+                        mapped[descriptive_field] = value
             return mapped
         
         # Mapear los campos según el mapeo proporcionado
         mapped_data = {}
         for entity_type, fields in mapping.items():
-            mapped_data[entity_type] = map_fields(fields, result)
+            mapped_entity = map_fields(fields, result)
+            if mapped_entity:  # Solo agregar si no está vacío
+                mapped_data[entity_type] = mapped_entity
                     
         return mapped_data
