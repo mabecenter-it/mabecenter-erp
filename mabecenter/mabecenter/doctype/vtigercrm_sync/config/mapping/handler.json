@@ -1,26 +1,25 @@
 {
+    "Contact": {
+        "doctype": "Contact"
+    },
+    "Address": {
+        "doctype": "Address"
+    },
     "Bank Card": {
         "doctype": "Bank Card",
-        "depends_on": ["Customer"]
+        "links": ["Customer"]
     },
     "Bank Account": {
         "doctype": "Bank Account",
-        "depends_on": ["Customer"]
+        "links": ["Customer"]
     },
     "Customer": {
         "doctype": "Customer",
-        "depends_on": []
-    },
-    "Contact": {
-        "doctype": "Contact",
-        "depends_on": ["Customer"]
-    },
-    "Address": {
-        "doctype": "Address",
-        "depends_on": ["Customer"]
+        "links": ["Sales Order", "Bank Account", "Bank Card", "Contact", "Address"]
     },
     "Sales Order": {
         "doctype": "Sales Order",
-        "depends_on": ["Customer", "Bank Card", "Bank Account"]
+        "links": ["Customer", "Contact", "Address"],
+        "depends_on": ["Customer"]
     }
 }

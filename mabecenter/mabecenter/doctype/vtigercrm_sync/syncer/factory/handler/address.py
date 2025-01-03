@@ -2,21 +2,26 @@ from typing import Any
 import frappe
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocTypeHandler
 
-class BaseDocumentHandler(DocTypeHandler):
+class AddressHandler(DocTypeHandler):
     def __init__(self, doctype):
-        self.doctype = doctype
-
+        self.doctype = 'Address'
 
     def process_data(self, doc_data, **kwargs):
+        # Prepare document data
+        
         existing_doc = self.find_existing(doc_data)
         if existing_doc:
             return self.update(existing_doc, doc_data)
         
         # Create new document
 
+        doc_data['address_type'] = 'Shipping'
+        doc_data['country'] = 'United States'
+        doc_data['address_title'] = f"{doc_data['address_line1']} - {doc_data['address_type'] }"
+
         doc = frappe.get_doc(doc_data)
         return doc  
-
+    
     def find_existing(self, data):
         """
         Find existing document based on key fields.
@@ -53,7 +58,7 @@ class BaseDocumentHandler(DocTypeHandler):
             frappe.logger().error(f"Error finding existing {self.doctype}: {str(e)}")
             
         return None
-
+    
     def attach_links(self, entity: Any, link: str, linked_entity: Any):
         """Adjunta un link a la tabla hija del documento"""
         try:

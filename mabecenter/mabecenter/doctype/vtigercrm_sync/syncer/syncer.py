@@ -1,5 +1,4 @@
 import frappe
-from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.factory import HandlerFactory
 from sqlalchemy.orm import sessionmaker
 
 from mabecenter.mabecenter.doctype.vtigercrm_sync.database.engine import get_engine
@@ -22,23 +21,13 @@ class Syncer:
         # Initialize syncer with document name and required components
         self.doc_name = doc_name
         self.vtigercrm_sync = frappe.get_doc("VTigerCRM Sync", doc_name)
-        self.handler_factory = HandlerFactory()
         self.progress_observer = FrappeProgressObserver()
         self.unit_of_work = UnitOfWork(lambda: sessionmaker(bind=get_engine())())
         self.config = SyncConfig()
-        
-        # Set up handlers for different entity types based on config
-        self.handlers = {
-            entity_type: {
-                'handler': self.handler_factory.create_handler(config['doctype']),
-                'depends_on': config['depends_on']
-            }
-            for entity_type, config in self.config.handle_file.items()
-        }
-        
+  
         # Initialize services
         self.query_service = QueryService(self.config)
-        self.record_processor = RecordProcessor(self.handlers)
+        self.record_processor = RecordProcessor(self.config)
 
     def sync(self):        
         try:
