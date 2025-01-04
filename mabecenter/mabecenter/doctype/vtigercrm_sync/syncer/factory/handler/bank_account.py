@@ -35,16 +35,18 @@ class BankAccountHandler(DocTypeHandler):
         """
         bank_name = doc_data.get('Bank')
         account_name = doc_data.get('account_name')
-        existing_bank_account = frappe.get_doc(
-            'Bank Account', 
-            {
-                'account_name': account_name,
-                'bank': bank_name
-            }
-        )
+        try:
+            existing_bank_account = frappe.get_doc(
+                'Bank Account', 
+                {
+                    'account_name': account_name,
+                    'bank': bank_name
+                }
+            )
+            return existing_bank_account
+        except:
+            return None
         
-        return existing_bank_account
-
     def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
