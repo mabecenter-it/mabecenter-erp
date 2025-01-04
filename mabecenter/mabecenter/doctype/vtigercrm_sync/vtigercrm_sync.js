@@ -10,7 +10,13 @@ frappe.ui.form.on("VTigerCRM Sync", {
 			if (vtigercrm_sync !== frm.doc.name) return;
 			
 			updateProgressBar(frm, percentage);
-			reloadDocument(frm);
+			//reloadDocument(frm);
+		})
+		frappe.realtime.on("vtigercrm_sync_error_log", ({ error_log, vtigercrm_sync }) => {
+			if (vtigercrm_sync !== frm.doc.name) return;
+			
+			updateErrorLog(frm, error_log);
+			//reloadDocument(frm);
 		})
 	},
 	onload(frm) {
@@ -53,6 +59,17 @@ frappe.ui.form.on("VTigerCRM Sync", {
 		});
 	},
 });
+
+function updateErrorLog(frm, error_log) {
+    const $wrapper = frm.get_field("sync_preview").$wrapper;
+    $wrapper.empty();
+    
+    const $progress = $(`<div class="warning">`).appendTo($wrapper);
+
+	$('<p class="text-danger">')
+		.text(`${error_log}`)
+		.appendTo($progress);
+}
 
 function updateProgressBar(frm, percentage) {
 	const $wrapper = frm.get_field("sync_preview").$wrapper;

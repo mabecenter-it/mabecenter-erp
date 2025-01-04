@@ -1,6 +1,7 @@
 {
     "Contact": {
-        "doctype": "Contact"
+        "doctype": "Contact",
+        "links": ["Customer"]
     },
     "Address": {
         "doctype": "Address"

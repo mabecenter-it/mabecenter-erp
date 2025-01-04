@@ -53,6 +53,7 @@ class Syncer:
                 
         except Exception as e:
             frappe.logger().error(f"Sync error: {str(e)}")
+            self.progress_observer.updateError(f"Sync error: {str(e)}", {'doc_name': self.doc_name})
             raise
 
     def _process_records(self, results):
@@ -68,4 +69,5 @@ class Syncer:
                 self.record_processor.process_record(record, self.config.mapping_file)
             except Exception as e:
                 frappe.logger().error(f"Error processing record {idx}: {str(e)}")
+                self.progress_observer.updateError(f"Error processing record {idx}: {str(e)}", {'doc_name': self.doc_name})
                 raise SyncError(f"Failed to process record {idx}") from e

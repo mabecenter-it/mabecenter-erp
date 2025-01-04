@@ -32,22 +32,3 @@ class DependencyResolver:
             visit(entity_type)
             
         return order
-
-    def update_dependencies(self, entity_type: str, doc: Any, results: Dict[str, Any]):
-        """Update document with its dependencies"""
-        handler_info = self.handlers[entity_type]
-        
-        if not handler_info['depends_on']:
-            return
-        
-        dependencies = {}
-        for dependency in handler_info['depends_on']:
-            if dependency in results and results[dependency]:
-                dependencies[dependency] = results[dependency].name
-        
-        if dependencies:
-            try:
-                handler_info['handler'].update(doc, {}, **dependencies)
-            except Exception as e:
-                frappe.logger().error(f"Error updating dependencies for {entity_type}: {str(e)}")
-                raise

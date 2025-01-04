@@ -7,7 +7,7 @@ from mabecenter.overrides.exception.base_document_exist import BaseDocumentExist
 # Base class for document handlers
 class DocTypeHandler(ABC):
     @abstractmethod
-    def attach_links(self, entity: Any, link: str, linked_entity: Any):
+    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
         # Abstract method to process document data
         pass
     

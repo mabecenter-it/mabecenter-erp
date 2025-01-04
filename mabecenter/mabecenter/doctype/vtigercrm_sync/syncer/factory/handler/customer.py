@@ -54,17 +54,24 @@ class CustomerHandler(DocTypeHandler):
             
         return None
 
-    def attach_links(self, entity: Any, link: str, linked_entity: Any):
+    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
-            pass
-            """ child_table = entity.get(link.lower() + '_table', [])
-            child_table.append({
-                'link_doctype': linked_entity.doctype,
-                'link_name': linked_entity.name
-            })
-            entity.set(link.lower() + '_table', child_table)
-            entity.save() """
+            for doctype in handlers.get(entity)['links']:
+                if doctype != entity and doctype in linked_entity:
+                    if link_name := linked_entity.get(doctype):
+                        if isinstance(link_name, list):
+                            link_name[0].append('links', {
+                                'link_doctype': entity,
+                                'link_name': link_name[0].name
+                            })
+                            link_name[0].save()
+                        else:
+                            link_name.append('links', {
+                                'link_doctype': entity,
+                                'link_name': link.name
+                            })
+                            link_name.save()
         except Exception as e:
             frappe.logger().error(f"Error adjuntando link {link} a {entity.doctype}: {str(e)}")
             raise

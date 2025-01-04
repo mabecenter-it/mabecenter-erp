@@ -44,8 +44,7 @@ class RecordProcessor:
                 result = self._create_entity(entity_type, entity_data)
                 if result:
                     processed_results[entity_type] = result
-                    self.dependency_resolver.update_dependencies(entity_type, result, processed_results)
-                    self.handlers[entity_type]['handler'].attach_links(entity_type, result, processed_results)
+                    self.handlers[entity_type]['handler'].attach_links(entity_type, result, processed_results, self.handlers)
 
         return processed_results
 
@@ -58,11 +57,11 @@ class RecordProcessor:
             owner_data['is_primary_contact'] = 1
             contact = self._create_entity('Contact', owner_data)
             if contact:
-                processed_results.setdefault('contacts', []).append(contact)
+                processed_results.setdefault('Contact', []).append(contact)
                 customer = self._create_entity('Customer', owner_data)
                 if customer:
                     processed_results['Customer'] = customer
-                    self.handlers['Customer']['handler'].attach_links('Customer', customer, processed_results)
+                    self.handlers['Customer']['handler'].attach_links('Customer', customer, processed_results, self.handlers)
 
         # Procesar contacto de spouse
         if 'spouse' in contact_info:
@@ -70,7 +69,7 @@ class RecordProcessor:
             spouse_data['is_primary_contact'] = 0
             contact = self._create_entity('Contact', spouse_data)
             if contact:
-                processed_results.setdefault('contacts', []).append(contact)
+                processed_results.setdefault('Contact', []).append(contact)
 
         # Procesar contacto de dependent
         if 'dependent_1' in contact_info:
@@ -78,7 +77,7 @@ class RecordProcessor:
             dependent_data['is_primary_contact'] = 0
             contact = self._create_entity('Contact', dependent_data)
             if contact:
-                processed_results.setdefault('contacts', []).append(contact)
+                processed_results.setdefault('Contact', []).append(contact)
 
     def _create_entity(self, entity_type: str, data: Dict[str, Any]) -> Optional[Any]:
         """Crea un nuevo documento sin dependencias"""

@@ -54,7 +54,7 @@ class BaseDocumentHandler(DocTypeHandler):
             
         return None
 
-    def attach_links(self, entity: Any, link: str, linked_entity: Any):
+    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
             """ child_table = entity.get(link.lower() + '_table', [])

@@ -35,7 +35,7 @@ class BankAccountHandler(DocTypeHandler):
         """
         bank_name = doc_data.get('Bank')
         account_name = doc_data.get('account_name')
-        existing_bank_account = frappe.db.exists(
+        existing_bank_account = frappe.get_doc(
             'Bank Account', 
             {
                 'account_name': account_name,
@@ -45,17 +45,23 @@ class BankAccountHandler(DocTypeHandler):
         
         return existing_bank_account
 
-    def attach_links(self, entity: Any, link: str, linked_entity: Any):
+    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
-            """ child_table = entity.get(link.lower() + '_table', [])
-            child_table.append({
-                'link_doctype': linked_entity.doctype,
-                'link_name': linked_entity.name
-            })
-            entity.set(link.lower() + '_table', child_table)
-            entity.save() """
-            pass
+            linked_to_bank_account = []
+            for doctype, data in handlers.items():
+                if entity in data.get('links', []):
+                    linked_to_bank_account.append(doctype)
+
+            for doctype_for_link in linked_to_bank_account:
+                if link_name := linked_entity.get(doctype_for_link):
+                    if doctype_for_link == 'Customer':
+                        link_name.db_set('default_bank_account', link.name)
+                    else:
+                        link_name.append('links', {
+                            'link_doctype': entity,
+                            'link_name': link.name
+                        })
         except Exception as e:
             frappe.logger().error(f"Error adjuntando link {link} a {entity.doctype}: {str(e)}")
             raise
