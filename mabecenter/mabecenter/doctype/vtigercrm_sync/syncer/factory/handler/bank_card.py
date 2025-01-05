@@ -2,9 +2,9 @@ from typing import Any
 import frappe
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocTypeHandler
 
-class BankAccountHandler(DocTypeHandler):
+class BankCardHandler(DocTypeHandler):
     def __init__(self):
-        self.doctype = 'Bank Account'
+        self.doctype = 'Bank Card'
 
     def process_data(self, doc_data, **kwargs):
         # Prepare document data
@@ -37,7 +37,7 @@ class BankAccountHandler(DocTypeHandler):
         account_name = doc_data.get('account_name')
         try:
             existing_bank_account = frappe.get_doc(
-                'Bank Account', 
+                'Bank Card', 
                 {
                     'account_name': account_name,
                     'bank': bank_name

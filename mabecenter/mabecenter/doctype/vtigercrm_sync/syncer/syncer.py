@@ -63,10 +63,12 @@ class Syncer:
         
         for idx, record in enumerate(results, start=1):
             try:
+                frappe.db.begin()
                 # Update progress through observer
                 self.progress_observer.update(idx/total_records, {'doc_name': self.doc_name})
                 # Process individual record using RecordProcessor
                 self.record_processor.process_record(record, self.config.mapping_file)
+                frappe.db.commit()
             except Exception as e:
                 frappe.logger().error(f"Error processing record {idx}: {str(e)}")
                 self.progress_observer.updateError(f"Error processing record {idx}: {str(e)}", {'doc_name': self.doc_name})

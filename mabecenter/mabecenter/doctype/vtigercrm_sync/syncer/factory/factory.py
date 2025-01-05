@@ -2,21 +2,22 @@ from typing import Dict
 
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.address import AddressHandler
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.bank_account import BankAccountHandler
+from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.bank_card import BankCardHandler
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.customer import CustomerHandler
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.sales_order import SalesOrderHandler
-from .handler.document import BaseDocumentHandler
+from .handler.contact import ContactHandler
 from .handler.base import DocTypeHandler
 
 class HandlerFactory:
     @staticmethod
     def create_handlers() -> Dict[str, DocTypeHandler]:
         handlers = {
-            'Bank Card': BaseDocumentHandler('Bank Card'),
-            'Customer': CustomerHandler('Customer'),
-            'Contact': BaseDocumentHandler('Contact'),
-            'Address': AddressHandler('Address'),
-            'Sales Order': SalesOrderHandler('Sales Order'),
-            'Bank Account': BankAccountHandler('Bank Account'),
+            'Bank Card': BankCardHandler(),
+            'Customer': CustomerHandler(),
+            'Contact': ContactHandler(),
+            'Address': AddressHandler(),
+            'Sales Order': SalesOrderHandler(),
+            'Bank Account': BankAccountHandler(),
         }
         return handlers
 

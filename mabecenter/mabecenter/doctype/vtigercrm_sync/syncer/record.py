@@ -3,7 +3,6 @@ import frappe
 from frappe import _
 
 from mabecenter.mabecenter.doctype.vtigercrm_sync.config.config import SyncConfig
-from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.dependency import DependencyResolver
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.factory import HandlerFactory
 
 class RecordProcessor:
@@ -17,15 +16,15 @@ class RecordProcessor:
             }
             for entity_type, config in config.handle_file.items()
         }
-        self.dependency_resolver = DependencyResolver(self.handlers)
 
     def process_record(self, record, fields):
         # Get mapped data from VTiger record
         mapped_data = record.as_dict(fields)
         processed_results = {}
+        processed_dependencies = {}
 
         # Process each entity type in order of dependencies
-        processing_order = self.dependency_resolver.determine_processing_order()
+        processing_order = mapped_data.keys()
 
         for entity_type in processing_order:
             if entity_type not in self.handlers:
@@ -36,38 +35,44 @@ class RecordProcessor:
             if not entity_data:
                 continue
 
+            if self.handlers[entity_type]['depends_on']:
+                processed_dependencies = self._resolve_dependencies(self.handlers[entity_type]['depends_on'], {}, processed_results)
+
             # Special handling for contacts from owner/spouse/dependents
             if entity_type == 'Contact':
-                self._process_contact_entities(entity_data, mapped_data, processed_results)
+                self._process_contact_entities(entity_data, mapped_data, processed_results, processed_dependencies)
             else:
                 # Normal entity processing
-                result = self._create_entity(entity_type, entity_data)
+                result = self._create_entity(entity_type, entity_data, processed_dependencies)
                 if result:
                     processed_results[entity_type] = result
-                    self.handlers[entity_type]['handler'].attach_links(entity_type, result, processed_results, self.handlers)
+
+        for entity_type in processed_results:
+            if self.handlers[entity_type]['links']:
+                self.handlers[entity_type]['handler'].attach_links(entity_type, processed_results, self.handlers)
 
         return processed_results
 
-    def _process_contact_entities(self, entity_data, mapped_data, processed_results):
+    def _process_contact_entities(self, entity_data, mapped_data, processed_results, processed_dependencies):
         contact_info = mapped_data.get('Contact', {})
 
         # Procesar owner como contacto principal
         if 'owner' in contact_info:
             owner_data = contact_info['owner']
             owner_data['is_primary_contact'] = 1
-            contact = self._create_entity('Contact', owner_data)
+            contact = self._create_entity('Contact', owner_data, processed_dependencies)
+            customer = self._create_entity('Customer', owner_data, processed_dependencies)
             if contact:
                 processed_results.setdefault('Contact', []).append(contact)
-                customer = self._create_entity('Customer', owner_data)
+                customer = self._create_entity('Customer', owner_data, processed_dependencies)
                 if customer:
                     processed_results['Customer'] = customer
-                    self.handlers['Customer']['handler'].attach_links('Customer', customer, processed_results, self.handlers)
 
         # Procesar contacto de spouse
         if 'spouse' in contact_info:
             spouse_data = contact_info['spouse']
             spouse_data['is_primary_contact'] = 0
-            contact = self._create_entity('Contact', spouse_data)
+            contact = self._create_entity('Contact', spouse_data, processed_dependencies)
             if contact:
                 processed_results.setdefault('Contact', []).append(contact)
 
@@ -75,11 +80,11 @@ class RecordProcessor:
         if 'dependent_1' in contact_info:
             dependent_data = contact_info['dependent_1']
             dependent_data['is_primary_contact'] = 0
-            contact = self._create_entity('Contact', dependent_data)
+            contact = self._create_entity('Contact', dependent_data, processed_dependencies)
             if contact:
                 processed_results.setdefault('Contact', []).append(contact)
 
-    def _create_entity(self, entity_type: str, data: Dict[str, Any]) -> Optional[Any]:
+    def _create_entity(self, entity_type: str, data: Dict[str, Any], processed_dependencies) -> Optional[Any]:
         """Crea un nuevo documento sin dependencias"""
         if not data:
             return None
@@ -88,11 +93,7 @@ class RecordProcessor:
         handler_info = self.handlers[entity_type]
 
         try:
-            existing_record = handler_info['handler'].find_existing(processed_data)
-            if existing_record:
-                return existing_record
-            else:
-                return handler_info['handler'].process(processed_data)
+            return handler_info['handler'].process(processed_data, processed_dependencies)
         except Exception as e:
             frappe.logger().error(f"Error en _create_entity para {entity_type}: {str(e)}")
             raise

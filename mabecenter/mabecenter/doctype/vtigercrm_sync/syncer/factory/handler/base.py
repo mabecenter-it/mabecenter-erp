@@ -16,17 +16,7 @@ class DocTypeHandler(ABC):
         # Abstract method to process document data
         pass
 
-    def _validate_and_attach_links(self, entity_type: str, entity: Any, processed_results: Dict[str, Any]):
-        """Valida los links y los adjunta en la tabla hija"""
-        handler_info = self.handlers[entity_type]
-        links = handler_info.get('links', [])
-
-        for link in links:
-            if link in processed_results:
-                linked_entity = processed_results[link]
-                self._attach_link(entity, link, linked_entity)
-
-    def process(self, data, **kwargs):
+    def process(self, data, processed_dependencies = None, **kwargs):
         try:
             # Set flag to indicate script execution
             frappe.flags.from_script = True
@@ -34,28 +24,25 @@ class DocTypeHandler(ABC):
             # Process data and dependencies
             processed_data = self._process_json_data(data)
             child_tables, main_data = self._split_data(processed_data)
-            processed_dependencies = self._process_dependencies(kwargs)
 
             doc_data = {
                 'doctype': self.doctype,
                 **main_data,
-                **processed_dependencies
             }
 
+            # implement depend_on
+            if processed_dependencies:
+                doc_data['customer'] = processed_dependencies['Customer'].name
+                        
             doc = self.process_data(doc_data)
-
-            # Add child tables if they exist
-            for table_name, table_data in child_tables.items():
-                if hasattr(doc, table_name):
-                    for row in table_data:
-                        doc.append(table_name, row)
             
             # Validate if method exists
             if hasattr(doc, 'validate'):
                 doc.validate()
                 
-            # Insert new document
-            doc.insert()
+
+            if not doc.creation:
+                doc.insert()
             
             
             return doc

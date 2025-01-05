@@ -3,7 +3,7 @@ import frappe
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocTypeHandler
 
 class CustomerHandler(DocTypeHandler):
-    def __init__(self, doctype):
+    def __init__(self):
         self.doctype = 'Customer'
 
     def process_data(self, doc_data, **kwargs):
@@ -58,20 +58,18 @@ class CustomerHandler(DocTypeHandler):
         """Adjunta un link a la tabla hija del documento"""
         try:
             for doctype in handlers.get(entity)['links']:
-                if doctype != entity and doctype in linked_entity:
-                    if link_name := linked_entity.get(doctype):
-                        if isinstance(link_name, list):
-                            link_name[0].append('links', {
-                                'link_doctype': entity,
-                                'link_name': link_name[0].name
-                            })
-                            link_name[0].save()
-                        else:
-                            link_name.append('links', {
-                                'link_doctype': entity,
-                                'link_name': link.name
-                            })
-                            link_name.save()
+                if doctype == 'Contact':
+                    link.set('customer_primary_contact', linked_entity.name)
+                    link.save()
+                elif doctype == 'Address':
+                    link.set('customer_primary_address', linked_entity.name)
+                    link.save()
+                elif doctype == 'Bank Account':
+                    link.set('default_bank_account', linked_entity.name)
+                    link.save()
+                elif doctype == 'Bank Card':
+                    link.set('default_bank_card', linked_entity.name)
+                    link.save()
         except Exception as e:
             frappe.logger().error(f"Error adjuntando link {link} a {entity.doctype}: {str(e)}")
             raise

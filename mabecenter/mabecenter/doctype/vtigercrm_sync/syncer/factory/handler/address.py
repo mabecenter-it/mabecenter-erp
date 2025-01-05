@@ -3,7 +3,7 @@ import frappe
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocTypeHandler
 
 class AddressHandler(DocTypeHandler):
-    def __init__(self, doctype):
+    def __init__(self):
         self.doctype = 'Address'
 
     def process_data(self, doc_data, **kwargs):
@@ -17,7 +17,7 @@ class AddressHandler(DocTypeHandler):
 
         doc_data['address_type'] = 'Shipping'
         doc_data['country'] = 'United States'
-        doc_data['address_title'] = f"{doc_data['address_line1']} - {doc_data['address_type'] }"
+        doc_data['address_title'] = doc_data['address_line1']
 
         doc = frappe.get_doc(doc_data)
         return doc  

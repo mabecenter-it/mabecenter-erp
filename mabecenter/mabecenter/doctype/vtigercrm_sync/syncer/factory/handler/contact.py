@@ -2,9 +2,9 @@ from typing import Any
 import frappe
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocTypeHandler
 
-class BaseDocumentHandler(DocTypeHandler):
-    def __init__(self, doctype):
-        self.doctype = doctype
+class ContactHandler(DocTypeHandler):
+    def __init__(self):
+        self.doctype = 'Contact'
 
 
     def process_data(self, doc_data, **kwargs):
@@ -57,14 +57,8 @@ class BaseDocumentHandler(DocTypeHandler):
     def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
-            """ child_table = entity.get(link.lower() + '_table', [])
-            child_table.append({
-                'link_doctype': linked_entity.doctype,
-                'link_name': linked_entity.name
-            })
-            entity.set(link.lower() + '_table', child_table)
-            entity.save() """
-            pass
+            for doctype in handlers.get(entity)['links']:
+                print("OK")
         except Exception as e:
             frappe.logger().error(f"Error adjuntando link {link} a {entity.doctype}: {str(e)}")
             raise

@@ -4,7 +4,8 @@
         "links": ["Customer"]
     },
     "Address": {
-        "doctype": "Address"
+        "doctype": "Address",
+        "links": ["Customer"]
     },
     "Bank Card": {
         "doctype": "Bank Card",
@@ -16,7 +17,7 @@
     },
     "Customer": {
         "doctype": "Customer",
-        "links": ["Sales Order", "Bank Account", "Bank Card", "Contact", "Address"]
+        "links": [ "Bank Account", "Bank Card", "Contact", "Address"]
     },
     "Sales Order": {
         "doctype": "Sales Order",

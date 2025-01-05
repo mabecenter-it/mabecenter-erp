@@ -3,7 +3,7 @@ import frappe
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocTypeHandler
 
 class SalesOrderHandler(DocTypeHandler):
-    def __init__(self, doctype):
+    def __init__(self):
         self.doctype = 'Sales Order'
 
     def process_data(self, doc_data, **kwargs):
@@ -14,10 +14,7 @@ class SalesOrderHandler(DocTypeHandler):
             return self.update(existing_doc, doc_data)
         
         doc_data['delivery_date'] = '2025-01-15'
-        doc_data['customer'] = 'test_customer'
         doc_data['company'] = 'Mabe Center'
-        doc_data['party_type'] = 'Customer'
-        doc_data['party'] = 'test_customer'
 
         doc = frappe.get_doc(doc_data)
 

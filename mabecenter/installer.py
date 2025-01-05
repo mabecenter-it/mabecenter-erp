@@ -1,6 +1,5 @@
 def after_install():
-    #create_bs_item()
-    pass
+    create_bs_item()
 
 def before_install():
     save_config_vtigercrm()
