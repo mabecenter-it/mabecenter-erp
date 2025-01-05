@@ -7,7 +7,7 @@ from mabecenter.overrides.exception.base_document_exist import BaseDocumentExist
 # Base class for document handlers
 class DocTypeHandler(ABC):
     @abstractmethod
-    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
+    def attach_links(self, entity: Any, processed_results: Any, handlers):
         # Abstract method to process document data
         pass
     
@@ -22,7 +22,7 @@ class DocTypeHandler(ABC):
             frappe.flags.from_script = True
             
             # Process data and dependencies
-            processed_data = self._process_json_data(data)
+            processed_data = data
             child_tables, main_data = self._split_data(processed_data)
 
             doc_data = {
@@ -68,24 +68,6 @@ class DocTypeHandler(ABC):
                 else:
                     processed[dep_name] = dep_doc.name
         return processed
-
-    def _process_json_data(self, data):
-        """Process JSON strings in data"""
-        processed_data = {}
-        for key, value in data.items():
-            if isinstance(value, str):
-                try:
-                    import json
-                    processed_value = json.loads(value)
-                    if isinstance(processed_value, dict):
-                        processed_data[key] = processed_value
-                    else:
-                        processed_data[key] = value
-                except json.JSONDecodeError:
-                    processed_data[key] = value
-            else:
-                processed_data[key] = value
-        return processed_data
 
     def update(self, existing_doc, new_data, **dependencies):
         # Update existing document with new data

@@ -29,7 +29,7 @@ class CustomerHandler(DocTypeHandler):
         
         # Check for unique fields in the doctype
         for df in meta.fields:
-            if df.unique and df.fieldname in data:
+            if df.fieldname in data:
                 filters[df.fieldname] = data[df.fieldname]
         
         # If no unique fields found, try common identifying fields
@@ -54,23 +54,18 @@ class CustomerHandler(DocTypeHandler):
             
         return None
 
-    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
+    def attach_links(self, entity: Any, processed_results: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
             for doctype in handlers.get(entity)['links']:
                 if doctype == 'Contact':
-                    link.set('customer_primary_contact', linked_entity.name)
-                    link.save()
+                    for contact in processed_results[doctype]:
+                        processed_results[entity].set('customer_primary_contact', contact.name)
+                        processed_results[entity].save()
                 elif doctype == 'Address':
-                    link.set('customer_primary_address', linked_entity.name)
-                    link.save()
-                elif doctype == 'Bank Account':
-                    link.set('default_bank_account', linked_entity.name)
-                    link.save()
-                elif doctype == 'Bank Card':
-                    link.set('default_bank_card', linked_entity.name)
-                    link.save()
+                    processed_results[entity].set('customer_primary_address', processed_results[doctype].name)
+                    processed_results[entity].save()
         except Exception as e:
-            frappe.logger().error(f"Error adjuntando link {link} a {entity.doctype}: {str(e)}")
+            frappe.logger().error(f"Error adjuntando link {processed_results[entity].doctype} a {entity.doctype}: {str(e)}")
             raise
     

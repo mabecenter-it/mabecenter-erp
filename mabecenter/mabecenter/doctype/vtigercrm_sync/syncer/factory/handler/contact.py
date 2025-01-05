@@ -53,12 +53,18 @@ class ContactHandler(DocTypeHandler):
             frappe.logger().error(f"Error finding existing {self.doctype}: {str(e)}")
             
         return None
-
-    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
+    
+    def attach_links(self, entity: Any, processed_results: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
             for doctype in handlers.get(entity)['links']:
-                print("OK")
+                if link_name := processed_results[doctype]:
+                    for contact in processed_results[entity]:
+                        contact.append('links', {
+                            'link_doctype': doctype,
+                            'link_name': link_name.name
+                        })
+                        contact.save()
         except Exception as e:
-            frappe.logger().error(f"Error adjuntando link {link} a {entity.doctype}: {str(e)}")
+            frappe.logger().error(f"Error adjuntando link {processed_results[entity].doctype} a {entity.doctype}: {str(e)}")
             raise

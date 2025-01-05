@@ -38,7 +38,7 @@ class SalesOrderHandler(DocTypeHandler):
         
         # Check for unique fields in the doctype
         for df in meta.fields:
-            if df.unique and df.fieldname in data:
+            if df.fieldname in data:
                 filters[df.fieldname] = data[df.fieldname]
         
         # If no unique fields found, try common identifying fields
@@ -58,22 +58,22 @@ class SalesOrderHandler(DocTypeHandler):
             existing_name = frappe.db.get_value(self.doctype, filters, 'name')
             if existing_name:
                 return frappe.get_doc(self.doctype, existing_name)
+            else:
+                return None
         except Exception as e:
             frappe.logger().error(f"Error finding existing {self.doctype}: {str(e)}")
-            
-        return None
     
-    def attach_links(self, entity: Any, link: str, linked_entity: Any, handlers):
+    def attach_links(self, entity: Any, processed_results: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
-            """ child_table = entity.get(link.lower() + '_table', [])
-            child_table.append({
-                'link_doctype': linked_entity.doctype,
-                'link_name': linked_entity.name
-            })
-            entity.set(link.lower() + '_table', child_table)
-            entity.save() """
+            """ for doctype in handlers.get(entity)['links']:
+                if link_name := processed_results[doctype]:
+                    processed_results[entity].append('links', {
+                        'link_doctype': doctype,
+                        'link_name': link_name.name
+                    })
+                    link_name.save() """
             pass
         except Exception as e:
-            frappe.logger().error(f"Error adjuntando link {link} a {entity.doctype}: {str(e)}")
+            frappe.logger().error(f"Error adjuntando link {processed_results[entity].doctype} a {entity.doctype}: {str(e)}")
             raise

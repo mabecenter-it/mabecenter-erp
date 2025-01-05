@@ -16,6 +16,34 @@ class RecordProcessor:
             }
             for entity_type, config in config.handle_file.items()
         }
+        self.processing_stack = set()
+
+    def determine_processing_order(self) -> List[str]:
+        """Determine order of entity processing based on dependencies"""
+        order = []
+        visited = set()
+        
+        def visit(entity_type):
+            if entity_type in self.processing_stack:
+                raise ValueError(f"Circular dependency detected for {entity_type}")
+            
+            if entity_type in visited:
+                return
+                
+            self.processing_stack.add(entity_type)
+            handler_info = self.handlers.get(entity_type, {})
+            
+            for dependency in handler_info.get('depends_on', []):
+                visit(dependency)
+                
+            self.processing_stack.remove(entity_type)
+            visited.add(entity_type)
+            order.append(entity_type)
+            
+        for entity_type in self.handlers:
+            visit(entity_type)
+            
+        return order
 
     def process_record(self, record, fields):
         # Get mapped data from VTiger record
@@ -24,7 +52,7 @@ class RecordProcessor:
         processed_dependencies = {}
 
         # Process each entity type in order of dependencies
-        processing_order = mapped_data.keys()
+        processing_order = self.determine_processing_order()
 
         for entity_type in processing_order:
             if entity_type not in self.handlers:

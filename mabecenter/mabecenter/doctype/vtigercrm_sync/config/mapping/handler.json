@@ -17,11 +17,11 @@
     },
     "Customer": {
         "doctype": "Customer",
-        "links": [ "Bank Account", "Bank Card", "Contact", "Address"]
+        "links": ["Contact", "Address"]
     },
     "Sales Order": {
         "doctype": "Sales Order",
-        "links": ["Customer", "Contact", "Address"],
+        "links": ["Contact", "Address"],
         "depends_on": ["Customer"]
     }
 }

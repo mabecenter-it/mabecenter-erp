@@ -24,6 +24,10 @@ configurator.setup.slides_settings = [
 				fieldtype: "Data",
 				reqd: 1,
 			}
-		]
+		],
+
+		/* onload: function (slide) {
+			this.create_general_item(slide);
+		}, */
 	}
 ]
