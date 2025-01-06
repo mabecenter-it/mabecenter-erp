@@ -7,26 +7,29 @@ class BankAccountHandler(DocTypeHandler):
         self.doctype = 'Bank Account'
 
     def process_data(self, doc_data, **kwargs):
-        # Prepare document data
-        bank_name = doc_data.get('Bank')
-        existing_bank = frappe.db.exists('Bank', {'bank_name': bank_name})
+        try:
+            # Prepare document data
+            bank_name = doc_data.get('Bank')
+            existing_bank = frappe.db.exists('Bank', {'bank_name': bank_name})
 
-        if existing_bank:
-            doc_data['bank'] = existing_bank
-        else:
-            doc_bank = frappe.get_doc({
-                'doctype': 'Bank',
-                'bank_name': bank_name
-            })
-            doc_bank.insert()
-            doc_data['bank'] = doc_bank.name
+            if existing_bank:
+                doc_data['bank'] = existing_bank
+            else:
+                doc_bank = frappe.get_doc({
+                    'doctype': 'Bank',
+                    'bank_name': bank_name
+                })
+                doc_bank.insert()
+                doc_data['bank'] = doc_bank.name
 
-        existing_doc = self.find_existing(doc_data)
-        if existing_doc:
-            return self.update(existing_doc, doc_data)
-        else:
-            doc = frappe.get_doc(doc_data)
-            return doc
+            existing_doc = self.find_existing(doc_data)
+            if existing_doc:
+                return self.update(existing_doc, doc_data)
+            else:
+                doc = frappe.get_doc(doc_data)
+                return doc
+        except Exception as e:
+            frappe.logger().error(f"BankAccountHandler process_data {str(e)}")
     
     def find_existing(self, doc_data):
         """
@@ -44,7 +47,8 @@ class BankAccountHandler(DocTypeHandler):
                 }
             )
             return existing_bank_account
-        except:
+        except Exception as e:
+            frappe.logger().error(f"BankAccountHandler find_existing {str(e)}")
             return None
         
     def attach_links(self, entity: Any, processed_results: Any, handlers):

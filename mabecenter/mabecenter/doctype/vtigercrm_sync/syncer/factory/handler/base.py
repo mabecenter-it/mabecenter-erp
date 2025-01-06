@@ -49,7 +49,9 @@ class DocTypeHandler(ABC):
             
         except BaseDocumentExist as e:
             # Handle existing document case
-            return frappe.get_doc(self.doctype, e.doctype_name)
+            frappe.logger().error(f"DocTypeHandler {str(e)}")
+            raise
+
         finally:
             # Reset script flag
             frappe.flags.from_script = False 
