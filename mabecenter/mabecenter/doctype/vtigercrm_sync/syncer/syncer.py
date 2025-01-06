@@ -53,6 +53,7 @@ class Syncer:
                 
         except Exception as e:
             frappe.logger().error(f"Sync error: {str(e)}")
+            
             self.progress_observer.updateError(f"Sync error: {str(e)}", {'doc_name': self.doc_name})
             raise
 
