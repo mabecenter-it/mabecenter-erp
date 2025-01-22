@@ -88,7 +88,6 @@ function updateProgressBar(frm, percentage) {
 		.appendTo($progress);
 }
 
-
 function reloadDocument(frm) {
 	frappe.model.with_doc("VTigerCRM Sync", frm.doc.name)
 		.then(() => frm.reload_doc());
