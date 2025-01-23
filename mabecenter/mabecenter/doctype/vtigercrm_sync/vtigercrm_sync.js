@@ -1,6 +1,7 @@
 // Copyright (c) 2024, Dante Devenir and contributors
 // For license information, please see license.txt
 
+
 frappe.ui.form.on("VTigerCRM Sync", {
 	setup(frm) {
 		frm.toggle_display("section_sync_preview", false);
