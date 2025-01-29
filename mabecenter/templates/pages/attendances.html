@@ -1,0 +1,56 @@
+{% extends "templates/web.html" %}
+
+{% block title %}
+  "Hello World in Title!"
+{% endblock %}
+
+{% block head_include %}
+  <link rel="stylesheet" href="/assets/frappe/css/fonts/fontawesome/font-awesome.min.css">
+{% endblock %}
+
+{% block header %}
+  <h3 class="my-account-header">Hello World in Header - Custom</h3>
+{% endblock %}
+
+{% block style %}
+  <style>
+    {% include "templates/includes/projects.css" %}
+  </style>
+{% endblock %}
+
+{% block page_content %}
+  <h1>Hello World!</h1>
+
+  <script>
+    { % include "frappe/public/js/frappe/provide.js" % }
+    { % include "frappe/public/js/frappe/form/formatters.js" % }
+  </script>
+{% endblock %}
+
+{% macro progress_bar(percent_complete) %}
+{% if percent_complete %}
+  <span class="small py-2">{{ _("Project Progress:") }}</span>
+  <div class="progress progress-hg" style="height: 15px;">
+    <div
+      class="progress-bar progress-bar-{{ 'warning' if percent_complete|round < 100 else 'success' }} active"\
+      role="progressbar" aria-valuenow="{{ percent_complete|round|int }}" aria-valuemin="0"\
+      aria-valuemax="100" style="width:{{ percent_complete|round|int }}%;">
+    </div>
+  </div>
+{% endif %}
+{% endmacro %}
+
+{% macro empty_state(section_name) %}
+  <div class="frappe-list align-items-center">
+    <div class=" text-muted flex justify-center align-center" style="">
+      <div class=" text-muted flex text-center">
+        <div class="msg-box no-border">
+          <div>
+            <img src="/assets/frappe/images/ui-states/list-empty-state.svg" alt="Generic Empty State" class="null-state">
+          </div>
+          <p>{{ _("You haven't created a {0} yet").format(section_name) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}

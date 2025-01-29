@@ -151,6 +151,8 @@ fixtures = [
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
 
+override_doctype_class = {"Attenance": "mabecenter.doctype.bathroom.bathroom.Bathroom"}
+
 # Document Events
 # ---------------
 # Hook on document methods and events
@@ -259,4 +261,8 @@ scheduler_events = {
 
 website_route_rules = [
     {"from_route": "/dashboard/<path:app_path>", "to_route": "dashboard"}
+]
+
+standard_portal_menu_items = [
+	{"title": "Attendance", "route": "/attendance", "reference_doctype": "Attendance", "role": "Customer"},
 ]
