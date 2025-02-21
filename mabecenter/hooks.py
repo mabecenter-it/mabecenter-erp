@@ -90,7 +90,7 @@ after_migrate = "mabecenter.installer.before_install"
 
 # setup wizard
 setup_wizard_requires = "assets/mabecenter/js/setup_wizard.js"
-setup_wizard_stages = "mabecenter.setup.setup_wizard.setup_wizard.get_setup_stages"
+#setup_wizard_stages = "mabecenter.setup.setup_wizard.setup_wizard.get_setup_stages"
 
 # import fixtures
 fixtures = [

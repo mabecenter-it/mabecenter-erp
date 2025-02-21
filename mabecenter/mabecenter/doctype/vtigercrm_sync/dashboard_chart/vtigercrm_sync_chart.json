@@ -1,0 +1,18 @@
+{
+    "chart_type": "Pie",
+    "data": {
+        "labels": ["Success", "Partial Success", "Error", "Timed Out"],
+        "datasets": [
+            {
+                "name": "Sync Status",
+                "values": [
+                    {"fieldname": "status", "filter": "Success"},
+                    {"fieldname": "status", "filter": "Partial Success"},
+                    {"fieldname": "status", "filter": "Error"},
+                    {"fieldname": "status", "filter": "Timed Out"}
+                ]
+            }
+        ]
+    },
+    "timespan": "Last 7 Days"
+}

@@ -1,0 +1,21 @@
+{
+    "charts": [
+        {
+            "chart": "VTiger Sync Status Chart",
+            "label": "Estatus de Sincronización"
+        }
+    ],
+    "cards": [
+        {
+            "card": "Total Syncs",
+            "label": "Total de Sincronizaciones"
+        }
+    ],
+    "links": [
+        {
+            "label": "Ver Errores",
+            "type": "Report",
+            "name": "VTiger Sync Error Report"
+        }
+    ]
+}

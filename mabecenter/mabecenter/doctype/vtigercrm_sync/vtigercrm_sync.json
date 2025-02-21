@@ -65,6 +65,7 @@
  "modified_by": "Administrator",
  "module": "Mabecenter",
  "name": "VTigerCRM Sync",
+ "dashboard": "VTigerCRM Sync Dashboard",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
