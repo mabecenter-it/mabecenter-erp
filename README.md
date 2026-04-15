@@ -18,6 +18,8 @@ chmod +x scripts/dev-up.sh scripts/dev-start.sh
 ./scripts/dev-start.sh
 ```
 
+If the machine is fresh, `scripts/dev-up.sh` will first call `scripts/dev-prereqs.sh` to install the required WSL packages and the `bench` CLI.
+
 Then open:
 
 ```text
@@ -33,12 +35,17 @@ Change the password after first login if you are sharing the environment.
 
 ### Prerequisites
 
+- WSL/Linux
+- `sudo` access
+
+Installed automatically by `scripts/dev-prereqs.sh`:
+
 - `bench`
 - `python3.11`
-- MariaDB running with a known root password
+- MariaDB
 - Redis
-- Node.js and Yarn
-- WSL/Linux
+- Node.js 18
+- Yarn
 
 ### One-command bootstrap
 
@@ -50,6 +57,7 @@ From the repo root inside WSL:
 
 This script will:
 
+- install missing WSL development prerequisites if needed
 - create a bench if needed
 - create a site if needed
 - install `erpnext`
@@ -78,6 +86,14 @@ Optional overrides:
 - `PYTHON_BIN`: Python binary, defaults to `python3.11`
 - `MARIADB_ROOT_PASSWORD`: MariaDB root password
 - `ADMIN_PASSWORD`: Administrator password for the site
+
+### Install Only Prerequisites
+
+If you want to prepare the machine first and bootstrap later:
+
+```bash
+./scripts/dev-prereqs.sh
+```
 
 ### Start the stack
 

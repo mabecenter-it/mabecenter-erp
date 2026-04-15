@@ -3,6 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PREREQS_SCRIPT="${SCRIPT_DIR}/dev-prereqs.sh"
 
 BENCH_ROOT="${BENCH_ROOT:-$HOME/frappe-dev}"
 BENCH_NAME="${BENCH_NAME:-mabecenter-bench}"
@@ -20,6 +21,10 @@ require_command() {
   fi
 }
 
+have_command() {
+  command -v "$1" >/dev/null 2>&1
+}
+
 app_installed() {
   bench --site "$SITE_NAME" list-apps 2>/dev/null | awk '{print $1}' | grep -qx "$1"
 }
@@ -29,9 +34,25 @@ if [[ "$(uname -s)" != "Linux" ]]; then
   exit 1
 fi
 
-require_command bench
 require_command git
+
+if ! have_command "$PYTHON_BIN" || ! have_command bench || ! have_command mysql || ! have_command redis-server || ! have_command node || ! have_command yarn; then
+  if [[ -f "$PREREQS_SCRIPT" ]]; then
+    echo "Installing missing development prerequisites"
+    bash "$PREREQS_SCRIPT"
+    export PATH="$HOME/.local/bin:$PATH"
+  else
+    echo "Missing prerequisites and ${PREREQS_SCRIPT} was not found." >&2
+    exit 1
+  fi
+fi
+
+require_command bench
 require_command "$PYTHON_BIN"
+require_command mysql
+require_command redis-server
+require_command node
+require_command yarn
 
 git config --global --add safe.directory "$REPO_DIR" || true
 git config --global --add safe.directory "$REPO_DIR/.git" || true
