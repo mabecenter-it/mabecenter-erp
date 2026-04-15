@@ -1,74 +1,102 @@
-# VTigerCRM Sync Module
+# Mabecenter ERP App
 
-## Structure
+Custom Frappe app that extends ERPNext with Mabecenter-specific customizations and a VTiger sync flow.
 
-### Root Files
-- `vtigercrm_sync.js`: Frontend controller for the VTigerCRM Sync form 
-- `vtigercrm_sync.py`: Main DocType implementation with sync functionality
-- `vtigercrm_sync.json`: DocType configuration
-- `vtigercrm_sync.css`: Styles for the sync interface
-- `vtigercrm_sync_list.js`: List view configuration for sync records
-- 
-### /database
-- `base.py`: SQLAlchemy base configuration and declarative base class
-- `engine.py`: Database connection configuration
-- `unit_of_work.py`: Transaction management implementationKK
+## Dev Setup
 
-### /models
-- `vtigercrm_salesordercf.py`: VTiger sales order custom fields model
-- `vtigercrm_contact.py.old`: Legacy contact model (deprecated)
+This repo is a Frappe app, not a full bench. For local development in WSL/Linux, use the scripts in `scripts/`.
 
-### /config
-- `config.py`: Configuration management class
-- `/mapping/`:
-  - `salesorder.json`: Field mappings for sales orders
-  - `handler.json`: Handler configurations for different entities
+### Quick Start
 
-### /syncer
-#### /syncer/handler
-- `base.py`: Abstract base handler
-- `document.py`: Base document handler implementation
-- `factory.py`: Handler factory for creating appropriate handlers
+If your machine already has the required system dependencies installed, the shortest path is:
 
-#### /syncer/observer
-- `base.py`: Abstract progress observer
-- `frappe.py`: Frappe-specific progress observer implementation
+```bash
+git clone https://github.com/mabecenter-it/mabecenter-erp.git
+cd mabecenter-erp
+chmod +x scripts/dev-up.sh scripts/dev-start.sh
+./scripts/dev-up.sh
+./scripts/dev-start.sh
+```
 
-#### /syncer/processor
-- `base.py`: Abstract entity processor
-- `sales_order.py`: Sales order processing logic
-- `customer.py`: Customer data processing
-- `bank_card.py`: Bank card information processing
-- `address.py`: Address data processing
-- `contact.py`: Contact information processing
+Then open:
 
-#### /syncer/services
-- `query.py`: Database query service implementation
+```text
+http://dev.localhost:8000/app
+```
 
-### /doctype/vtigercrm_sync_log
-- `vtigercrm_sync_log.json`: Log DocType configuration
-- `vtigercrm_sync_log.py`: Log implementation
-- `vtigercrm_sync_log.js`: Log form script
+Default login:
 
-## Key Components
+- user: `Administrator`
+- password: `Admin1234.`
 
-1. **Sync Engine**: Manages the synchronization process between VTiger CRM and Frappe
-2. **Data Processors**: Handle specific entity type transformations
-3. **Database Handlers**: Manage database connections and transactions
-4. **Progress Tracking**: Real-time sync progress monitoring
-5. **Error Handling**: Comprehensive error capture and logging
+Change the password after first login if you are sharing the environment.
 
-## Features
+### Prerequisites
 
-- Bidirectional sync between VTiger CRM and Frappe
-- Real-time progress tracking
-- Custom field mapping support
-- Error logging and recovery
-- Transaction management
-- Entity relationship handling
+- `bench`
+- `python3.11`
+- MariaDB running with a known root password
+- Redis
+- Node.js and Yarn
+- WSL/Linux
 
-Test app customize
+### One-command bootstrap
 
-#### License
+From the repo root inside WSL:
+
+```bash
+./scripts/dev-up.sh
+```
+
+This script will:
+
+- create a bench if needed
+- create a site if needed
+- install `erpnext`
+- install this app as `mabecenter`
+- run migrations
+
+Defaults:
+
+- bench: `~/frappe-dev/mabecenter-bench`
+- site: `dev.localhost`
+- admin password: `Admin1234.`
+- MariaDB root password: `root`
+
+You can override them:
+
+```bash
+BENCH_NAME=lab-bench SITE_NAME=lab.localhost ADMIN_PASSWORD=MyStrongPass. ./scripts/dev-up.sh
+```
+
+Optional overrides:
+
+- `BENCH_ROOT`: where the bench folder will be created
+- `BENCH_NAME`: bench name
+- `SITE_NAME`: Frappe site name
+- `FRAPPE_BRANCH`: Frappe and ERPNext branch, defaults to `version-15`
+- `PYTHON_BIN`: Python binary, defaults to `python3.11`
+- `MARIADB_ROOT_PASSWORD`: MariaDB root password
+- `ADMIN_PASSWORD`: Administrator password for the site
+
+### Start the stack
+
+```bash
+./scripts/dev-start.sh
+```
+
+If Windows cannot resolve the hostname, add this to `C:\Windows\System32\drivers\etc\hosts`:
+
+```text
+127.0.0.1 dev.localhost
+```
+
+## What This App Adds
+
+- VTiger sync DocTypes and logic
+- customizations for `Customer`, `Contact`, `Sales Order`, `Packed Item`, and `Address`
+- Mabecenter-specific supporting DocTypes such as `bank_card`, `broker_item`, and `company_item`
+
+## License
 
 mit
