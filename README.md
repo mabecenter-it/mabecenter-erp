@@ -36,7 +36,7 @@ Change the password after first login if you are sharing the environment.
 ### Prerequisites
 
 - WSL/Linux
-- `sudo` access
+- `sudo` access (the scripts use `sudo` non‑interactive; provide your sudo password in the scripts or modify them to prompt for it)
 
 Installed automatically by `scripts/dev-prereqs.sh`:
 
