@@ -10,9 +10,11 @@ BENCH_NAME="${BENCH_NAME:-mabecenter-bench}"
 BENCH_DIR="${BENCH_ROOT}/${BENCH_NAME}"
 SITE_NAME="${SITE_NAME:-dev.localhost}"
 FRAPPE_BRANCH="${FRAPPE_BRANCH:-version-15}"
-PYTHON_BIN="${PYTHON_BIN:-python3.11}"
+PYTHON_BIN="${PYTHON_BIN:-}"
 MARIADB_ROOT_PASSWORD="${MARIADB_ROOT_PASSWORD:-root}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-Admin1234.}"
+
+export PATH="$HOME/.local/bin:$PATH"
 
 require_command() {
   if ! command -v "$1" >/dev/null 2>&1; then
@@ -23,6 +25,25 @@ require_command() {
 
 have_command() {
   command -v "$1" >/dev/null 2>&1
+}
+
+choose_python() {
+  if [[ -n "$PYTHON_BIN" ]]; then
+    command -v "$PYTHON_BIN" >/dev/null 2>&1 && {
+      echo "$PYTHON_BIN"
+      return 0
+    }
+    return 1
+  fi
+
+  for candidate in python3.11 python3.10 python3; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+
+  return 1
 }
 
 app_installed() {
@@ -36,7 +57,7 @@ fi
 
 require_command git
 
-if ! have_command "$PYTHON_BIN" || ! have_command bench || ! have_command mysql || ! have_command redis-server || ! have_command node || ! have_command yarn; then
+if ! choose_python >/dev/null || ! have_command bench || ! have_command mysql || ! have_command redis-server || ! have_command node || ! have_command yarn; then
   if [[ -f "$PREREQS_SCRIPT" ]]; then
     echo "Installing missing development prerequisites"
     bash "$PREREQS_SCRIPT"
@@ -47,12 +68,22 @@ if ! have_command "$PYTHON_BIN" || ! have_command bench || ! have_command mysql 
   fi
 fi
 
+PYTHON_BIN="$(choose_python || true)"
+
 require_command bench
 require_command "$PYTHON_BIN"
 require_command mysql
 require_command redis-server
 require_command node
 require_command yarn
+
+if command -v sudo >/dev/null 2>&1; then
+  sudo service mariadb start || true
+  sudo service redis-server start || true
+fi
+
+echo "Using Python: $PYTHON_BIN ($(command -v "$PYTHON_BIN"))"
+echo "Using Bench:  $(command -v bench)"
 
 git config --global --add safe.directory "$REPO_DIR" || true
 git config --global --add safe.directory "$REPO_DIR/.git" || true
