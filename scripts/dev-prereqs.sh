@@ -50,12 +50,23 @@ if ! command -v node >/dev/null 2>&1; then
   log "Installing Node.js 18"
   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
   sudo apt-get install -y nodejs
+  sudo apt-get install -y npm
 fi
 
 if ! command -v yarn >/dev/null 2>&1; then
   log "Installing Yarn"
   sudo npm install -g yarn
 fi
+
+
+if ! command -v pip3 >/dev/null 2>&1; then
+  sudo apt-get install -y python3-pip
+fi
+
+python3.11 -m pip install --user --upgrade pip --break-system-packages
+python3.11 -m pip install --user frappe-bench --break-system-packages
+
+
 
 mkdir -p "$HOME/.local/bin"
 

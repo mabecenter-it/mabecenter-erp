@@ -46,10 +46,10 @@ Change the password after first login if you are sharing the environment.
 
 ### Prerequisites
 
-- Windows with WSL/Ubuntu, or native Linux
-- `sudo` access in WSL/Linux
-- internet access to download Frappe, ERPNext, Node packages, and Python packages
-- ports `8000`, `9000`, `6787`, and the usual Redis/MariaDB ports available
+- WSL/Linux (or Windows with WSL/Ubuntu)
+- `sudo` access (the scripts use `sudo` non‑interactive; provide your sudo password in the scripts or modify them to prompt for it)
+- Internet access to download Frappe, ERPNext, Node and Python packages
+- Ports `8000`, `9000`, `6787`, and the usual Redis/MariaDB ports must be available
 
 Installed automatically by `scripts/dev-prereqs.sh`:
 
