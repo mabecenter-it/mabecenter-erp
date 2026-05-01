@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Dante Devenir and Contributors
+# Copyright (c) 2024, IT Mabe center and Contributors
 # See license.txt
 
 # import frappe

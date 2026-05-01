@@ -1,6 +1,6 @@
 app_name = "mabecenter"
 app_title = "Mabecenter"
-app_publisher = "Dante Devenir"
+app_publisher = "IT Mabe center"
 app_description = "Test app customize"
 app_email = "dantedevenir@outlook.com"
 app_license = "mit"

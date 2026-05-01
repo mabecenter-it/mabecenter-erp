@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Dante Devenir and contributors
+# Copyright (c) 2024, IT Mabe center and contributors
 # For license information, please see license.txt
 
 # Import Frappe framework components
