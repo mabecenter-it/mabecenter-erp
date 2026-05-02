@@ -94,13 +94,32 @@ setup_wizard_requires = "assets/mabecenter/js/setup_wizard.js"
 
 # import fixtures
 fixtures = [
-    # export all records from the Category table
-    # "Patient",
-	"Client Script",
+    {
+        "dt": "Custom Field",
+        "filters": [
+            ["dt", "in", [
+                "Sales Order",
+                "Customer",
+                "Contact",
+                "Address",
+                "Packed Item",
+            ]]
+        ],
+    },
+    {
+        "dt": "Property Setter",
+        "filters": [
+            ["doc_type", "in", [
+                "Sales Order",
+                "Customer",
+                "Contact",
+                "Address",
+                "Packed Item",
+            ]]
+        ],
+    },
+    "Client Script",
     "Server Script",
-    # "Contact"
-    # export only those records that match the filters from the Role table
-    #{"dt": "Role", "filters": [["role_name", "like", "Admin%"]]},
 ]
 
 # Uninstallation
