@@ -77,7 +77,7 @@ jobs:
           # Hacer el build usando la variable de ambiente
           docker build \
             --build-arg FRAPPE_PATH=https://github.com/frappe/frappe \
-            --build-arg FRAPPE_BRANCH=version-15 \
+            --build-arg FRAPPE_BRANCH=version-16 \
             --build-arg APPS_JSON_BASE64="${APPS_JSON_BASE64}" \
             --tag docker.io/mabecenter/erpnext:${{ env.FULL_TAG }} \
             --file frappe_docker/images/layered/Containerfile .
