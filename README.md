@@ -1,161 +1,545 @@
-# Mabecenter ERP App
+# Mabecenter ERP
 
-Custom Frappe app that extends ERPNext with Mabecenter-specific customizations and a VTiger sync flow.
+Mabecenter ERP is a custom Frappe/ERPNext app for Mabecenter-specific insurance brokerage workflows, including ERPNext customizations and VTiger sync logic.
 
-## Dev Setup
+This project targets **Frappe/ERPNext v16**.
 
-This repo is a Frappe app, not a full bench. You do not run it directly from this
-folder like a normal Python or Node project. For local development, create a
-Frappe bench in WSL/Linux and install this app into that bench.
+## 1. Idea Principal
 
-The scripts in `scripts/` automate that setup for Ubuntu/WSL.
+This repo is a Frappe app, not a full bench and not a standalone Node/Python app. You do not run it directly from the repo folder.
 
-### Quick Start
+Keep these three concepts separate:
 
-From a fresh Windows machine:
+```text
+Repo Git = code shared with the team
+Bench    = local Frappe runtime
+Site     = database/configuration where changes are tested
+```
 
-1. Install WSL with Ubuntu.
-2. Open the Ubuntu/WSL terminal.
-3. Clone and bootstrap the project:
+Recommended local structure:
+
+```text
+~/mabecenter-workspace/
+  repo/
+    mabecenter-erp/     -> real Git repo
+  bench-v16/            -> Frappe/ERPNext v16 bench
+```
+
+## 2. Requirements
+
+Use WSL/Ubuntu or Linux. Run the commands inside WSL, not PowerShell/CMD.
+
+For Frappe/ERPNext v16, use:
+
+```text
+Python 3.14
+Node.js 24
+Yarn 1.22+
+MariaDB 11.8
+Redis 6+
+bench 5+
+```
+
+Check your versions:
+
+```bash
+python --version
+node --version
+yarn --version
+mysql --version
+redis-server --version
+bench --version
+```
+
+If you use `uv` for Python/bench:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.bashrc
+uv python install 3.14 --default
+uv tool install frappe-bench --force
+```
+
+If you use `nvm` for Node:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+source ~/.bashrc
+nvm install 24
+nvm use 24
+npm install -g yarn
+```
+
+## 3. Crear Workspace Limpio
+
+```bash
+cd ~
+mkdir -p ~/mabecenter-workspace
+cd ~/mabecenter-workspace
+```
+
+Create the repo folder:
+
+```bash
+mkdir -p repo
+cd repo
+```
+
+Clone the project:
 
 ```bash
 git clone https://github.com/mabecenter-it/mabecenter-erp.git
 cd mabecenter-erp
-chmod +x scripts/*.sh
-./scripts/dev-doctor.sh
-./scripts/dev-up.sh
-./scripts/dev-start.sh
+git checkout develop
 ```
 
-If the machine is fresh, `scripts/dev-up.sh` will first call
-`scripts/dev-prereqs.sh` to install the required WSL packages and the `bench`
-CLI.
-
-Then open:
+The real repo is:
 
 ```text
-http://dev.localhost:8000/app
+~/mabecenter-workspace/repo/mabecenter-erp
 ```
 
-Default login:
-
-- user: `Administrator`
-- password: `Admin1234.`
-
-Change the password after first login if you are sharing the environment.
-
-### Prerequisites
-
-- WSL/Linux (or Windows with WSL/Ubuntu)
-- `sudo` access (the scripts use `sudo` non‑interactive; provide your sudo password in the scripts or modify them to prompt for it)
-- Internet access to download Frappe, ERPNext, Node and Python packages
-- Ports `8000`, `9000`, `6787`, and the usual Redis/MariaDB ports must be available
-
-Installed automatically by `scripts/dev-prereqs.sh`:
-
-- `bench`
-- Python 3
-- `pipx`
-- MariaDB
-- Redis
-- Node.js 18
-- Yarn
-
-The scripts are written for Linux. Run them inside WSL/Ubuntu, not PowerShell or
-CMD.
-
-### One-command bootstrap
-
-From the repo root inside WSL:
+Open this folder in VS Code:
 
 ```bash
-chmod +x scripts/*.sh
-./scripts/dev-up.sh
+code ~/mabecenter-workspace/repo/mabecenter-erp
 ```
 
-This script will:
+## 4. Crear Bench v16
 
-- install missing WSL development prerequisites if needed
-- create a bench if needed
-- create a site if needed
-- install `erpnext`
-- install this app as `mabecenter`
-- run migrations
-
-Defaults:
-
-- bench: `~/frappe-dev/mabecenter-bench`
-- site: `dev.localhost`
-- admin password: `Admin1234.`
-- MariaDB root password: `root`
-
-You can override them:
+Return to the workspace:
 
 ```bash
-BENCH_NAME=lab-bench SITE_NAME=lab.localhost ADMIN_PASSWORD=MyStrongPass. ./scripts/dev-up.sh
+cd ~/mabecenter-workspace
 ```
 
-Optional overrides:
-
-- `BENCH_ROOT`: where the bench folder will be created
-- `BENCH_NAME`: bench name
-- `SITE_NAME`: Frappe site name
-- `FRAPPE_BRANCH`: Frappe and ERPNext branch, defaults to `version-15`
-- `PYTHON_BIN`: Python binary, defaults to the first available `python3.11`, `python3.10`, or `python3`
-- `MARIADB_ROOT_PASSWORD`: MariaDB root password
-- `ADMIN_PASSWORD`: Administrator password for the site
-
-### Start After Setup
-
-After `dev-up.sh` has completed once, start the dev server with:
+Create the v16 bench:
 
 ```bash
-./scripts/dev-start.sh
+bench init bench-v16 --frappe-branch version-16
+cd ~/mabecenter-workspace/bench-v16
+```
+
+Install ERPNext v16:
+
+```bash
+bench get-app erpnext --branch version-16
+```
+
+Install Mabecenter as a soft link to the real Git repo:
+
+```bash
+bench get-app --soft-link /home/damian/mabecenter-workspace/repo/mabecenter-erp
+```
+
+Verify that the bench uses the real repo:
+
+```bash
+readlink -f apps/mabecenter
+readlink -f ~/mabecenter-workspace/repo/mabecenter-erp
+```
+
+Both commands should print:
+
+```text
+/home/damian/mabecenter-workspace/repo/mabecenter-erp
+```
+
+That means the bench is not using a second copy of the app.
+
+## 5. Crear Site
+
+Create the local site:
+
+```bash
+bench new-site mabe16.localhost --mariadb-root-password root --admin-password Admin1234.
+```
+
+If your MariaDB root password is not `root`, use the correct password.
+
+Install the apps:
+
+```bash
+bench --site mabe16.localhost install-app erpnext
+bench --site mabe16.localhost install-app mabecenter
+bench --site mabe16.localhost migrate
+bench use mabe16.localhost
+```
+
+If `install-app erpnext` fails with a Redis queue connection error, start the bench in another terminal:
+
+```bash
+cd ~/mabecenter-workspace/bench-v16
+bench start
+```
+
+Then repeat the failed install command.
+
+## 6. Arrancar el Proyecto
+
+From the v16 bench:
+
+```bash
+cd ~/mabecenter-workspace/bench-v16
+bench start
 ```
 
 Open:
 
 ```text
-http://dev.localhost:8000/app
+http://mabe16.localhost:8001/app
 ```
 
-If Windows cannot resolve the hostname, add this line to
-`C:\Windows\System32\drivers\etc\hosts` as Administrator:
+If your bench uses port `8000`, open:
 
 ```text
-127.0.0.1 dev.localhost
+http://mabe16.localhost:8000/app
 ```
 
-If port `8000` is already busy, Frappe may fail to start. Stop the process using
-that port or change the bench/web port in your local bench configuration.
+Login:
 
-### Install Only Prerequisites
+```text
+User: Administrator
+Password: Admin1234.
+```
 
-If you want to prepare the machine first and bootstrap later:
+If Windows does not resolve `mabe16.localhost`, add this line to `C:\Windows\System32\drivers\etc\hosts` as Administrator:
+
+```text
+127.0.0.1 mabe16.localhost
+```
+
+## 7. Flujo Diario de Trabajo
+
+Terminal for running Frappe:
 
 ```bash
-chmod +x scripts/*.sh
-./scripts/dev-prereqs.sh
+cd ~/mabecenter-workspace/bench-v16
+bench start
 ```
 
-### Diagnose a Machine
-
-If setup fails on another machine, run:
+Terminal for coding:
 
 ```bash
-./scripts/dev-doctor.sh
+cd ~/mabecenter-workspace/repo/mabecenter-erp
+code .
 ```
 
-This prints the detected system, required commands, versions, and expected bench
-folder. Share that output when debugging setup problems.
+Rule:
 
-### Start the stack
+```text
+Code in repo/
+Run from bench-v16/
+Test in mabe16.localhost
+```
+
+## 8. Customizaciones Desde la UI
+
+If you customize an ERPNext form from the Frappe UI, for example:
+
+```text
+Customize Form > Sales Order
+```
+
+changes such as these are saved first in the site database, not in Git:
+
+- adding a field
+- changing a label
+- hiding a field
+- making a field required
+- moving fields
+- changing field properties
+
+The local site database is:
+
+```text
+mabe16.localhost
+```
+
+To move UI customizations into Git, export fixtures.
+
+## 9. Configurar Fixtures en hooks.py
+
+File:
+
+```text
+~/mabecenter-workspace/repo/mabecenter-erp/mabecenter/hooks.py
+```
+
+Use filtered fixtures:
+
+```python
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [
+            ["dt", "in", [
+                "Sales Order",
+                "Customer",
+                "Contact",
+                "Address",
+                "Packed Item",
+            ]]
+        ],
+    },
+    {
+        "dt": "Property Setter",
+        "filters": [
+            ["doc_type", "in", [
+                "Sales Order",
+                "Customer",
+                "Contact",
+                "Address",
+                "Packed Item",
+            ]]
+        ],
+    },
+    "Client Script",
+    "Server Script",
+]
+```
+
+This belongs in Git. It tells Frappe to export:
+
+- Custom Fields for the selected DocTypes
+- Property Setters for the selected DocTypes
+- Client Scripts
+- Server Scripts
+
+## 10. Exportar Cambios de la UI al Repo
+
+After customizing from the UI:
 
 ```bash
-./scripts/dev-start.sh
+cd ~/mabecenter-workspace/bench-v16
+bench --site mabe16.localhost export-fixtures
 ```
 
-### Dashboard Assets
+This creates or updates files like:
+
+```text
+~/mabecenter-workspace/repo/mabecenter-erp/mabecenter/fixtures/custom_field.json
+~/mabecenter-workspace/repo/mabecenter-erp/mabecenter/fixtures/property_setter.json
+```
+
+Review before committing:
+
+```bash
+cd ~/mabecenter-workspace/repo/mabecenter-erp
+git status
+git diff -- mabecenter/hooks.py mabecenter/fixtures
+```
+
+If the diff is correct:
+
+```bash
+git add mabecenter/hooks.py mabecenter/fixtures
+git commit -m "Export ERPNext customizations"
+git push
+```
+
+## 11. Si Te Arrepientes de un Cambio en la UI
+
+Clean both places:
+
+```text
+1. Database/UI
+2. Repo/fixtures
+```
+
+First revert the change in Frappe:
+
+```text
+Customize Form > Sales Order
+```
+
+Then export fixtures again:
+
+```bash
+cd ~/mabecenter-workspace/bench-v16
+bench --site mabe16.localhost export-fixtures
+```
+
+Review Git:
+
+```bash
+cd ~/mabecenter-workspace/repo/mabecenter-erp
+git status
+git diff
+```
+
+If you do not want to keep any pending fixture change:
+
+```bash
+git restore mabecenter/hooks.py
+git restore mabecenter/fixtures/custom_field.json mabecenter/fixtures/property_setter.json
+```
+
+If the fixture files are new/untracked:
+
+```bash
+rm mabecenter/fixtures/custom_field.json mabecenter/fixtures/property_setter.json
+```
+
+Important rule:
+
+```text
+git restore does not revert the UI/database.
+The UI is reverted from Frappe.
+Git is reverted from Git.
+```
+
+## 12. Cuando un Compañero Sube Cambios
+
+Pull the repo:
+
+```bash
+cd ~/mabecenter-workspace/repo/mabecenter-erp
+git pull
+```
+
+Apply changes to the local site:
+
+```bash
+cd ~/mabecenter-workspace/bench-v16
+bench --site mabe16.localhost migrate
+bench --site mabe16.localhost clear-cache
+```
+
+If frontend/assets changed:
+
+```bash
+bench build --app mabecenter
+```
+
+If running with `bench start`, stop it with `Ctrl + C` and start it again:
+
+```bash
+bench start
+```
+
+## 13. Trabajo en Equipo con Fixtures
+
+Fixture files are regenerated completely. Two developers can work on the same DocType, but it requires discipline.
+
+Before customizing from UI:
+
+```bash
+cd ~/mabecenter-workspace/repo/mabecenter-erp
+git pull
+cd ~/mabecenter-workspace/bench-v16
+bench --site mabe16.localhost migrate
+```
+
+Then customize, export, and review:
+
+```bash
+bench --site mabe16.localhost export-fixtures
+cd ~/mabecenter-workspace/repo/mabecenter-erp
+git diff -- mabecenter/fixtures
+```
+
+Do not commit if your diff removes fields or property setters you did not touch.
+
+Best practice:
+
+```text
+One developer per heavily customized DocType at a time.
+Always pull + migrate before UI customization.
+Always review fixture diff before commit.
+```
+
+## 14. Qué No Debemos Hacer
+
+Do not modify ERPNext directly:
+
+```text
+~/mabecenter-workspace/bench-v16/apps/erpnext
+```
+
+ERPNext is an external dependency. Extend it from `mabecenter` using:
+
+```text
+Custom Fields
+Property Setters
+Client Scripts
+Server Scripts
+hooks.py
+fixtures
+patches
+overrides
+```
+
+Senior rule:
+
+```text
+ERPNext is extended.
+ERPNext is not edited directly unless there is an exceptional reason.
+```
+
+## 15. Flujo Mental Completo
+
+When customizing from UI:
+
+```text
+Frappe UI
+-> site database
+-> bench export-fixtures
+-> JSON in mabecenter repo
+-> git commit/push
+-> teammate git pull
+-> bench migrate
+-> change appears in teammate site
+```
+
+When changing code:
+
+```text
+Edit mabecenter-erp repo
+-> git commit/push
+-> teammate git pull
+-> bench migrate/build/clear-cache
+```
+
+## 16. Resumen Final
+
+```text
+Git/repo
+= shared team truth
+= where commits are made
+= ~/mabecenter-workspace/repo/mabecenter-erp
+```
+
+```text
+Bench
+= Frappe runtime
+= contains apps, sites, env, config and logs
+= ~/mabecenter-workspace/bench-v16
+```
+
+```text
+Site
+= local database/configuration
+= where the UI saves changes first
+= mabe16.localhost
+```
+
+```text
+Fixtures
+= bridge between DB and Git
+= convert UI customizations into versioned JSON
+```
+
+Core lesson:
+
+```text
+Frappe UI does not write to Git.
+Frappe UI writes to the database.
+export-fixtures moves DB -> repo.
+migrate moves repo -> DB.
+```
+
+## 17. Dashboard Assets
 
 The Angular dashboard is in `dashboard/`. The Frappe app build uses:
 
@@ -164,47 +548,18 @@ yarn install
 yarn build
 ```
 
-The root `yarn build` command builds the Angular dashboard and copies the built
-files into the Frappe app under `mabecenter/public/dashboard` and
-`mabecenter/www/dashboard.html`.
-
-### Common Problems
-
-`This script is intended for WSL/Linux.`
-
-You are running the setup from PowerShell/CMD instead of WSL/Ubuntu.
-
-`bench: command not found`
-
-Open a new WSL terminal or run:
-
-```bash
-source ~/.bashrc
-export PATH="$HOME/.local/bin:$PATH"
-```
-
-`dev.localhost` does not open from Windows.
-
-Add this line to the Windows hosts file:
+The root `yarn build` command builds the Angular dashboard and copies the built files into:
 
 ```text
-127.0.0.1 dev.localhost
+mabecenter/public/dashboard
+mabecenter/www/dashboard.html
 ```
 
-MariaDB password errors during `bench new-site`.
-
-The scripts assume the MariaDB root password is `root` by default. If your local
-MariaDB uses a different password, run:
-
-```bash
-MARIADB_ROOT_PASSWORD=your-password ./scripts/dev-up.sh
-```
-
-## What This App Adds
+## 18. What This App Adds
 
 - VTiger sync DocTypes and logic
 - customizations for `Customer`, `Contact`, `Sales Order`, `Packed Item`, and `Address`
-- Mabecenter-specific supporting DocTypes such as `bank_card`, `broker_item`, and `company_item`
+- supporting DocTypes such as `Bank Card`, `Broker Item`, `Company Item`, `Dependent Item`, and `Document Item`
 
 ## License
 
