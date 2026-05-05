@@ -103,6 +103,7 @@ fixtures = [
                 "Contact",
                 "Address",
                 "Packed Item",
+                "Lead",
             ]]
         ],
     },
@@ -115,6 +116,7 @@ fixtures = [
                 "Contact",
                 "Address",
                 "Packed Item",
+                "Lead",
             ]]
         ],
     },
