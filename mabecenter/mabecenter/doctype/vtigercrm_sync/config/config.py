@@ -7,8 +7,8 @@ from typing import Dict, Any
 @dataclass
 class SyncConfig:
     status_values: list = field(default_factory=lambda: ['Active', 'Initial Enrollment', 'Sin Digitar'])
-    effective_date: date = field(default_factory=lambda: date(2025, 1, 1))
-    sell_date: date = field(default_factory=lambda: date(2024, 10, 28))
+    effective_date: date = field(default_factory=lambda: date(2026, 1, 1))
+    sell_date: date = field(default_factory=lambda: date(2025, 10, 28))
     
     def __post_init__(self):
         self.mapping_file = self._load_mapping('salesorder')

@@ -4,3 +4,10 @@
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
+
+
+[{"comment": "<div class=\"ql-editor read-mode\"><p>NO CONTESTA</p></div>", 
+"by": "Administrator", "name": "1dfasdhl8f"}, 
+{"comment": "<div class=\"ql-editor read-mode\"><p>ESTA PERSONA ES DEMASIADO PELEONA</p></div>", 
+"by": "Administrator", "name": "1kd5bg56ie"}]
+

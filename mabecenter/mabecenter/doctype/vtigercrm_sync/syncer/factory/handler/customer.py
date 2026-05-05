@@ -8,7 +8,11 @@ class CustomerHandler(DocTypeHandler):
 
     def process_data(self, doc_data, **kwargs):
 
-        doc_data['customer_name'] = f"{doc_data['first_name']} {doc_data['last_name']}"
+        first_name = doc_data.pop('first_name', '')
+        last_name = doc_data.pop('last_name', '')
+        doc_data.pop('custom_day_of_birth', None)
+
+        doc_data['customer_name'] = f"{first_name} {last_name}".strip()
         
         existing_doc = self.find_existing(doc_data)
         if existing_doc:
@@ -22,6 +26,11 @@ class CustomerHandler(DocTypeHandler):
         Find existing document based on key fields.
         Returns the document if found, None otherwise.
         """
+        if data.get("customer_name"):
+            existing_name = frappe.db.get_value(self.doctype, {"customer_name": data["customer_name"]}, "name")
+            if existing_name:
+                return frappe.get_doc(self.doctype, existing_name)
+
         filters = {}
         
         # Get metadata for the doctype
@@ -57,15 +66,17 @@ class CustomerHandler(DocTypeHandler):
     def attach_links(self, entity: Any, processed_results: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
+            customer = frappe.get_doc(self.doctype, processed_results[entity].name)
             for doctype in handlers.get(entity)['links']:
                 if doctype == 'Contact':
                     for contact in processed_results[doctype]:
-                        processed_results[entity].set('customer_primary_contact', contact.name)
-                        processed_results[entity].save()
+                        customer.set('customer_primary_contact', contact.name)
+                        break
                 elif doctype == 'Address':
-                    processed_results[entity].set('customer_primary_address', processed_results[doctype].name)
-                    processed_results[entity].save()
+                    customer.set('customer_primary_address', processed_results[doctype].name)
+            customer.save()
+            processed_results[entity] = customer
         except Exception as e:
-            frappe.logger().error(f"Error adjuntando link {processed_results[entity].doctype} a {entity.doctype}: {str(e)}")
+            frappe.logger().error(f"Error adjuntando links para {entity}: {str(e)}")
             raise
     

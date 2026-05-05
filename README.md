@@ -129,7 +129,7 @@ bench get-app erpnext --branch version-16
 Install Mabecenter as a soft link to the real Git repo:
 
 ```bash
-bench get-app --soft-link /home/damian/mabecenter-workspace/repo/mabecenter-erp
+bench get-app --soft-link ~/mabecenter-workspace/repo/mabecenter-erp
 ```
 
 Verify that the bench uses the real repo:
@@ -142,7 +142,7 @@ readlink -f ~/mabecenter-workspace/repo/mabecenter-erp
 Both commands should print:
 
 ```text
-/home/damian/mabecenter-workspace/repo/mabecenter-erp
+~/mabecenter-workspace/repo/mabecenter-erp
 ```
 
 That means the bench is not using a second copy of the app.
