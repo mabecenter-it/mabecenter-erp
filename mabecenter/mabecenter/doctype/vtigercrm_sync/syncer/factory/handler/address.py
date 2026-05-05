@@ -62,13 +62,21 @@ class AddressHandler(DocTypeHandler):
     def attach_links(self, entity: Any, processed_results: Any, handlers):
         """Adjunta un link a la tabla hija del documento"""
         try:
+            address = frappe.get_doc(self.doctype, processed_results[entity].name)
             for doctype in handlers.get(entity)['links']:
                 if link_name := processed_results[doctype]:
-                    processed_results[entity].append('links', {
+                    if any(
+                        link.link_doctype == doctype and link.link_name == link_name.name
+                        for link in address.links
+                    ):
+                        continue
+
+                    address.append('links', {
                         'link_doctype': doctype,
                         'link_name': link_name.name
                     })
-                    link_name.save()
+            address.save()
+            processed_results[entity] = address
         except Exception as e:
-            frappe.logger().error(f"Error adjuntando link {processed_results[entity].doctype} a {entity.doctype}: {str(e)}")
+            frappe.logger().error(f"Error adjuntando links para {entity}: {str(e)}")
             raise

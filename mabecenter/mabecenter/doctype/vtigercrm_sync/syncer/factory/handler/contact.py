@@ -22,6 +22,19 @@ class ContactHandler(DocTypeHandler):
         Find existing document based on key fields.
         Returns the document if found, None otherwise.
         """
+        if data.get("first_name") and data.get("last_name") and data.get("custom_day_of_birth"):
+            existing_name = frappe.db.get_value(
+                self.doctype,
+                {
+                    "first_name": data["first_name"],
+                    "last_name": data["last_name"],
+                    "custom_day_of_birth": data["custom_day_of_birth"],
+                },
+                "name",
+            )
+            if existing_name:
+                return frappe.get_doc(self.doctype, existing_name)
+
         filters = {}
         
         # Get metadata for the doctype
@@ -60,11 +73,18 @@ class ContactHandler(DocTypeHandler):
             for doctype in handlers.get(entity)['links']:
                 if link_name := processed_results[doctype]:
                     for contact in processed_results[entity]:
+                        contact = frappe.get_doc(self.doctype, contact.name)
+                        if any(
+                            link.link_doctype == doctype and link.link_name == link_name.name
+                            for link in contact.links
+                        ):
+                            continue
+
                         contact.append('links', {
                             'link_doctype': doctype,
                             'link_name': link_name.name
                         })
                         contact.save()
         except Exception as e:
-            frappe.logger().error(f"Error adjuntando link {processed_results[entity].doctype} a {entity.doctype}: {str(e)}")
+            frappe.logger().error(f"Error adjuntando links para {entity}: {str(e)}")
             raise
