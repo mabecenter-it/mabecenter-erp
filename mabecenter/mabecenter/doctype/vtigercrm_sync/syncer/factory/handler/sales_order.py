@@ -1,6 +1,7 @@
 from typing import Any
 import frappe
 from mabecenter.mabecenter.doctype.vtigercrm_sync.syncer.factory.handler.base import DocTypeHandler
+from datetime import datetime, timedelta, date
 
 class SalesOrderHandler(DocTypeHandler):
     def __init__(self):
@@ -13,7 +14,12 @@ class SalesOrderHandler(DocTypeHandler):
         if existing_doc:
             return self.update(existing_doc, doc_data)
         
-        doc_data['delivery_date'] = '2025-01-15'
+        delivery_date = self._resolve_delivery_date(doc_data.get('transaction_date'))
+        # Keep both fields in sync. Some environments validate `delivery_date`,
+        # others rely on `expected_delivery_date`.
+        doc_data['expected_delivery_date'] = delivery_date
+        doc_data['delivery_date'] = delivery_date
+            
         doc_data['company'] = 'Mabe Center'
 
         doc = frappe.get_doc(doc_data)
@@ -25,6 +31,19 @@ class SalesOrderHandler(DocTypeHandler):
         })
 
         return doc  
+
+    def _resolve_delivery_date(self, transaction_date_value) -> str:
+        """Return a delivery date strictly after transaction date."""
+        if isinstance(transaction_date_value, datetime):
+            base_date = transaction_date_value.date()
+        elif isinstance(transaction_date_value, date):
+            base_date = transaction_date_value
+        elif isinstance(transaction_date_value, str):
+            base_date = datetime.strptime(transaction_date_value, '%Y-%m-%d').date()
+        else:
+            base_date = frappe.utils.getdate()
+
+        return (base_date + timedelta(days=1)).strftime('%Y-%m-%d')
     
     def find_existing(self, data):
         """
