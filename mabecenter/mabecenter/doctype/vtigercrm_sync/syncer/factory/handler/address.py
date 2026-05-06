@@ -27,6 +27,21 @@ class AddressHandler(DocTypeHandler):
         Find existing document based on key fields.
         Returns the document if found, None otherwise.
         """
+        # Primary match for sync idempotency: exact postal footprint.
+        # Relying on generic metadata/unique fields is too weak for Address
+        # and causes duplicated records with suffixes (-1, -2, ...).
+        address_filters = {
+            "address_line1": data.get("address_line1"),
+            "city": data.get("city"),
+            "state": data.get("state"),
+            "pincode": data.get("pincode"),
+            "country": data.get("country") or "United States",
+        }
+        if all(address_filters.values()):
+            existing_name = frappe.db.get_value(self.doctype, address_filters, "name")
+            if existing_name:
+                return frappe.get_doc(self.doctype, existing_name)
+
         filters = {}
         
         # Get metadata for the doctype
