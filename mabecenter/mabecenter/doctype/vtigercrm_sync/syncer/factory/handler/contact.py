@@ -8,14 +8,30 @@ class ContactHandler(DocTypeHandler):
 
 
     def process_data(self, doc_data, **kwargs):
-        existing_doc = self.find_existing(doc_data)
-        if existing_doc:
-            return self.update(existing_doc, doc_data)
-        
-        # Create new document
+        try:
+            existing_doc = self.find_existing(doc_data)
+            if existing_doc:
+                return self.update(existing_doc, doc_data)
+            
+            # Map CIUDADANO to valid option
+            if 'custom_document' in doc_data:
+                custom_doc = str(doc_data['custom_document']).strip().upper()
+                if custom_doc == 'CIUDADANO':
+                    doc_data['custom_document'] = 'Citizen'
+                elif custom_doc == 'RESIDENTE':
+                    doc_data['custom_document'] = 'Resident (I-551)'
+            
+            # Log the data being processed
+            frappe.logger().info(f"Creating Contact with data: {doc_data}")
+            
+            # Create new document
 
-        doc = frappe.get_doc(doc_data)
-        return doc  
+            doc = frappe.get_doc(doc_data)
+            return doc  
+        except Exception as e:
+            frappe.logger().error(f"Error in ContactHandler.process_data: {str(e)}")
+            frappe.logger().error(f"Data that caused error: {doc_data}")
+            raise  
 
     def find_existing(self, data):
         """
