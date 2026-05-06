@@ -118,6 +118,22 @@ class RecordProcessor:
             return None
 
         processed_data = self._preprocess_data(data)
+        
+        # Map CIUDADANO to valid option for Contact
+        if entity_type == 'Contact' and 'custom_document' in processed_data:
+            custom_doc = str(processed_data['custom_document']).strip().upper()
+            frappe.logger().info(f"DEBUG _create_entity: custom_document before mapping: {custom_doc}")
+            if custom_doc == 'CIUDADANO':
+                processed_data['custom_document'] = 'Citizen'
+                frappe.logger().info("DEBUG _create_entity: Mapped CIUDADANO to Citizen")
+            elif custom_doc == 'RESIDENTE':
+                processed_data['custom_document'] = 'Resident (I-551)'
+                frappe.logger().info("DEBUG _create_entity: Mapped RESIDENTE to Resident (I-551)")
+            else:
+                frappe.logger().info(f"DEBUG _create_entity: No mapping found for {custom_doc}")
+            
+            frappe.logger().info(f"DEBUG _create_entity: custom_document after mapping: {processed_data['custom_document']}")
+        
         handler_info = self.handlers[entity_type]
 
         try:
