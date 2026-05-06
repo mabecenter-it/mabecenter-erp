@@ -49,10 +49,17 @@ class Syncer:
                 
                 # Process fetched records
                 self._process_records(results)
+                
+                # Create success log
+                self._create_sync_log(success=True, messages={"status": "Sync completed successfully", "total_records": len(results)})
+                
                 return True
                 
         except Exception as e:
             frappe.logger().error(f"Sync error: {str(e)}")
+            
+            # Create sync log record
+            self._create_sync_log(success=False, exception=str(e))
             
             self.progress_observer.updateError(f"Sync error: {str(e)}", {'doc_name': self.doc_name})
             raise
@@ -72,5 +79,35 @@ class Syncer:
                 frappe.db.commit()
             except Exception as e:
                 frappe.logger().error(f"Error processing record {idx}: {str(e)}")
+                
+                # Create sync log record for failed record
+                self._create_sync_log(success=False, exception=str(e), row_indexes=[idx])
+                
                 self.progress_observer.updateError(f"Error processing record {idx}: {str(e)}", {'doc_name': self.doc_name})
                 raise SyncError(f"Failed to process record {idx}") from e
+
+    def _create_sync_log(self, success=True, exception=None, row_indexes=None, messages=None):
+        """Create a VTigerCRM Sync Log record"""
+        try:
+            log_doc = frappe.new_doc("VTigerCRM Sync Log")
+            log_doc.vtigercrm_sync = self.doc_name
+            log_doc.success = success
+            log_doc.log_index = 1  # Can be incremented if multiple logs per sync
+            
+            if exception:
+                log_doc.exception = exception
+            
+            if row_indexes:
+                import json
+                log_doc.row_indexes = json.dumps(row_indexes)
+            
+            if messages:
+                import json
+                log_doc.messages = json.dumps(messages)
+            
+            log_doc.insert(ignore_permissions=True)
+            frappe.db.commit()
+            
+        except Exception as log_error:
+            frappe.logger().error(f"Failed to create sync log: {str(log_error)}")
+            # Don't raise - logging failure shouldn't stop the sync process

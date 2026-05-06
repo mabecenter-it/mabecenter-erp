@@ -41,7 +41,8 @@
             "last_name": "cf_2297",
             "custom_day_of_birth": "cf_2299",
             "custom_ssn": "cf_2321",
-            "gender": "cf_2303"
+            "gender": "cf_2303",
+            "custom_document": "cf_2601"
         },
         "spouse": {
             "first_name": "cf_2347",
