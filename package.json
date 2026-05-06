@@ -12,7 +12,7 @@
     "bugs": {
       "url": "https://github.com/mabecenter-it/mabecenter-erp/issues"
     },
-    "workspaces": ["dashboard"],
+    "workspWaces": ["dashboard"], 
     "scripts": {
       "install": "cd dashboard && yarn install --check-files",
       "build": "cd dashboard && yarn build"
@@ -21,4 +21,3 @@
       "html2canvas": "^1.4.1"
     }
   }
-  

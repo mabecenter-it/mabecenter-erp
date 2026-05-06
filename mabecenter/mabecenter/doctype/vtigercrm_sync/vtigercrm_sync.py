@@ -58,6 +58,8 @@ def start_sync(vtigercrm_sync):
 	try:
 		# Execute sync process
 		Syncer(doc_name=vtigercrm_sync).sync()
+		doc = frappe.get_doc("VTigerCRM Sync", vtigercrm_sync)
+		doc.db_set("status", "Success")
 	except JobTimeoutException:
 		# Handle timeout
 		frappe.db.rollback()
