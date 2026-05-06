@@ -39,19 +39,22 @@
             "first_name": "cf_2293",
             "last_name": "cf_2297",
             "custom_day_of_birth": "cf_2299",
-            "custom_ssn": "cf_2321"
+            "custom_ssn": "cf_2321",
+            "gender": "cf_2303"
         },
         "spouse": {
             "first_name": "cf_2347",
             "last_name": "cf_2351",
             "custom_day_of_birth": "cf_2355",
-            "custom_ssn": "cf_2357"
+            "custom_ssn": "cf_2357",
+            "gender": "cf_2359"
         },
         "dependent_1": {
             "first_name": "cf_2405",
             "last_name": "cf_2409",
             "custom_day_of_birth": "cf_2413",
-            "custom_ssn": "cf_2417"
+            "custom_ssn": "cf_2417",
+            "gender": "cf_2411"
         }
     }
 }
