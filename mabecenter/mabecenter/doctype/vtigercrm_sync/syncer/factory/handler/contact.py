@@ -16,10 +16,17 @@ class ContactHandler(DocTypeHandler):
             # Map CIUDADANO to valid option
             if 'custom_document' in doc_data:
                 custom_doc = str(doc_data['custom_document']).strip().upper()
+                frappe.logger().info(f"DEBUG: custom_document before mapping: {custom_doc}")
                 if custom_doc == 'CIUDADANO':
                     doc_data['custom_document'] = 'Citizen'
+                    frappe.logger().info("DEBUG: Mapped CIUDADANO to Citizen")
                 elif custom_doc == 'RESIDENTE':
                     doc_data['custom_document'] = 'Resident (I-551)'
+                    frappe.logger().info("DEBUG: Mapped RESIDENTE to Resident (I-551)")
+                else:
+                    frappe.logger().info(f"DEBUG: No mapping found for {custom_doc}")
+                
+                frappe.logger().info(f"DEBUG: custom_document after mapping: {doc_data['custom_document']}")
             
             # Log the data being processed
             frappe.logger().info(f"Creating Contact with data: {doc_data}")
