@@ -109,7 +109,7 @@
    "name": "Contact-custom_document",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "\nPassport\nResident (I-551)\nReentry (I-327)\nRefugee Travel (I-571)\nEmployment Authorization (I-766)\nVisa (temporary I-551)\nTemporary (passport or I-94/I-94A)\nDeparture Record (I-94/I-94A)\nDeparture Record in foreign passport (I-94)\nForeign Passport\nNonimmigrant Student Status (I-20)\nExchange Visitor Status (DS-2019)\nNotice of Action (I-797)\nIndian Tribe/American Indian born in Canada\nAlien number or I-94 number\nUSCIS (I-797C)",
+   "options": "\nCitizen\nPassport\nResident (I-551)\nReentry (I-327)\nRefugee Travel (I-571)\nEmployment Authorization (I-766)\nVisa (temporary I-551)\nTemporary (passport or I-94/I-94A)\nDeparture Record (I-94/I-94A)\nDeparture Record in foreign passport (I-94)\nForeign Passport\nNonimmigrant Student Status (I-20)\nExchange Visitor Status (DS-2019)\nNotice of Action (I-797)\nIndian Tribe/American Indian born in Canada\nAlien number or I-94 number\nUSCIS (I-797C)",
    "owner": "Administrator",
    "permlevel": 0,
    "placeholder": null,
