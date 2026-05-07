@@ -50,7 +50,8 @@
             "last_name": "cf_2351",
             "custom_day_of_birth": "cf_2355",
             "custom_ssn": "cf_2357",
-            "gender": "cf_2359"
+            "gender": "cf_2359",
+            "custom_document": "cf_2603"
         },
         "dependent_1": {
             "first_name": "cf_2405",
@@ -58,7 +59,8 @@
             "last_name": "cf_2409",
             "custom_day_of_birth": "cf_2413",
             "custom_ssn": "cf_2417",
-            "gender": "cf_2411"
+            "gender": "cf_2411",
+            "custom_document": "cf_2605"
         }
     }
 }
