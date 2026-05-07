@@ -73,7 +73,7 @@ class Syncer:
                 self._process_records(results)
                 
                 # Create success log
-                self._create_sync_log(success=True, messages={"status": "Sync completed successfully", "total_records": len(results)})
+                self._create_sync_log(success=True, messages={"status": "Sync completed successfully", "total_records": len(results),"results:": [record.as_dict(self.config.mapping_file) for record in results]})
                 
                 return True
 
